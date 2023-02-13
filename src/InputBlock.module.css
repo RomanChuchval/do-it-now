@@ -1,0 +1,12 @@
+.error_title {
+    color: red;
+}
+
+.input {
+    border: 1px solid orangered;
+    padding-left: 10px;
+    border-radius: 15px;
+    height: 20px;
+    width: 200px;
+    outline: none;
+}
