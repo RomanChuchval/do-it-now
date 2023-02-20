@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import s from './EditableSpan.module.css'
+import TextField from '@mui/material/TextField';
 
 type EditableSpanType = {
     title: string
@@ -17,8 +18,13 @@ export const EditableSpan: React.FC<EditableSpanType> = (
     const [newTitle, setNewTitle] = useState<string>(title)
     const onEditModeHandler = () => setEditMode(true)
     const offEditModeHandler = () => {
-        callback(newTitle)
-        setEditMode(false)
+       if  (newTitle.length > 0 ) {
+           callback(newTitle)
+           setEditMode(false)
+       } else {
+           setNewTitle(title)
+           setEditMode(false)
+       }
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value)
@@ -27,16 +33,24 @@ export const EditableSpan: React.FC<EditableSpanType> = (
     return (
         <>
             {editMode
-                ? <input className={s.input}
-                         onChange={onChangeHandler}
-                         value={newTitle}
-                         onBlur={offEditModeHandler}
-                         autoFocus
+                ? <TextField
+                    sx={{input: {color: 'white'}}}
+                    size={'small'}
+                    id="outlined-basic"
+                    label={title}
+                    variant="outlined"
+                    onChange={onChangeHandler}
+                    onBlur={offEditModeHandler}
+                    value={newTitle}
+                    autoFocus
                 />
-                : <span onDoubleClick={onEditModeHandler}
-                >
-                    {title}
-            </span>}
+                //  <input className={s.input}
+                //          onChange={onChangeHandler}
+                //          value={newTitle}
+                //          onBlur={offEditModeHandler}
+                //          autoFocus
+                // />
+                : <span className={s.todolist_title} onDoubleClick={onEditModeHandler}>{title}</span>}
         </>
 
     )

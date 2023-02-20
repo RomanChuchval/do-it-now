@@ -1,13 +1,16 @@
 .btn {
-    margin: 5px;
-    outline: none;
-    border: none;
-    background-color: orangered;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    height: max-content;
-    width: max-content;
+    /*margin: 5px;*/
+    /*outline: none;*/
+    /*border: none;*/
+    /*background-color: orangered;*/
+    /*color: white;*/
+    /*border-radius: 10px;*/
+    /*cursor: pointer;*/
+    /*height: max-content;*/
+    /*width: max-content;*/
+    margin: 10px;
+    align-self: center;
+    justify-self: center;
 }
 
 .btn2 {

@@ -1,0 +1,28 @@
+
+.app {
+  background-image: url(assets/wallpaper.jpeg);
+  background-position: center;
+  height: max-content;
+  background-repeat: repeat-y;
+  background-size: cover;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  width: content-box;
+  min-height: 1100px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.add_todoList_block {
+  margin: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.todoLists_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

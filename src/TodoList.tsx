@@ -1,9 +1,10 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TodoListType} from "./App";
 import s from './TodoList.module.css'
 import {SuperButton} from "./SuperButton";
 import {InputBlock} from "./InputBlock";
 import {EditableSpan} from "./EditableSpan";
+import Checkbox from '@mui/material/Checkbox';
 
 export type TodoListPropsType = {
     todoListId: string
@@ -34,7 +35,6 @@ export const TodoList: React.FC<TodoListPropsType> = (
         changeTaskTitle
     }
 ) => {
-
     const onChangeTaskTitle = (taskId:string, newTitle: string) => {
         changeTaskTitle(todoListId, taskId, newTitle)
     }
@@ -53,9 +53,9 @@ export const TodoList: React.FC<TodoListPropsType> = (
 
         return (
             <li key={task.id}>
-                <SuperButton name={'x'} callback={removeTaskHandler}/>
+                <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
                 <EditableSpan title={task.taskName} callback={changeTaskTitleHandler} />
-                <input onChange={changeTaskStatusHandler} type={"checkbox"} checked={task.isDone}/>
+                <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.isDone} />
             </li>
         )
     })
@@ -82,10 +82,10 @@ export const TodoList: React.FC<TodoListPropsType> = (
         <>
             <div className={s.todolist_wrapper}>
                 <div>
-                    <h3>
+                    <div className={s.todolist_header_wrapper}>
                         <EditableSpan callback={changeTodoListTitleHandler} title={title} />
-                        <SuperButton name={'Remove'} callback={removeTodoListHandler}/>
-                    </h3>
+                        <SuperButton name={'Remove'} btnType={'delete'} callback={removeTodoListHandler}/>
+                    </div>
                 </div>
                 <div>
                     <InputBlock callback={addTaskHandler}/>
@@ -95,7 +95,7 @@ export const TodoList: React.FC<TodoListPropsType> = (
                         {tasksList.length > 0 ? tasksList : 'Tasks list is empty'}
                     </ul>
                 </div>
-                <div>
+                <div className={s.filter_button_wrapper}>
                     <SuperButton filter={filter} value={'all'}
                                  name={'All'} callback={changeFilterAllHandler}/>
                     <SuperButton filter={filter} value={'active'}

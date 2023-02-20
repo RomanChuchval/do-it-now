@@ -1,5 +1,5 @@
-import React, {useReducer, useState} from 'react';
-import './App.css';
+import React, {useReducer} from 'react';
+import s from './App.module.css';
 import {TodoList} from "./TodoList";
 import {v1} from "uuid";
 import {InputBlock} from "./InputBlock";
@@ -17,6 +17,7 @@ import {
     removeTodoListAC,
     todoListsReducer
 } from "./reducers/todoListsReducer";
+import ButtonAppBar from "./Appbar";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodoListsType = {
@@ -74,7 +75,6 @@ function App() {
         ]
     })
 
-
     const removeTodoList = (todoListID: string) => {
         todoListsDispatch(removeTodoListAC(todoListID))
         todoListsDataDispatch(removeFullTasksListAC(todoListID))
@@ -128,12 +128,12 @@ function App() {
 
     const mappedTodoList = todoLists.map(tl => {
         const filteredTodoList = (): TodoListType[] => {
-            let todoData = todoListsData[tl.todoListId]
+            const todoData = todoListsData[tl.todoListId]
             return tl.filter === 'completed' ? todoData.filter(el => el.isDone)
                 : tl.filter === 'active' ? todoData.filter(el => !el.isDone)
                     : todoData
         }
-        let todoData = filteredTodoList()
+        const todoData = filteredTodoList()
         return (
             <TodoList
                 key={tl.todoListId}
@@ -153,12 +153,18 @@ function App() {
     })
 
     return (
-        <div className="App">
-            <div>
-                <InputBlock callback={addNewTodoList}/>
+        <>
+            <ButtonAppBar/>
+            <div className={s.app}>
+                <div className={s.add_todoList_block}>
+                    <InputBlock callback={addNewTodoList}/>
+                </div>
+                <div className={s.todoLists_wrapper}>
+                    {mappedTodoList}
+                </div>
             </div>
-            {mappedTodoList}
-        </div>
+        </>
+
     );
 }
 

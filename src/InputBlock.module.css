@@ -10,3 +10,8 @@
     width: 200px;
     outline: none;
 }
+
+.input_block_wrapper {
+    display: flex;
+    gap: 10px;
+}

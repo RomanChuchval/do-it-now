@@ -6,3 +6,7 @@
     width: 200px;
     outline: none;
 }
+
+.todolist_title {
+    font-family: Roboto, sans-serif;
+}

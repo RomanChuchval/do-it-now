@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import s from "./InputBlock.module.css";
 import {SuperButton} from "./SuperButton";
+import TextField from '@mui/material/TextField';
 
 type InputBlockPropsType = {
     callback: (title: string) => void
@@ -9,38 +10,49 @@ type InputBlockPropsType = {
 export const InputBlock: React.FC<InputBlockPropsType> = (
     {
         callback,
-
     }
 ) => {
     const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
     const addTaskKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         return e.key === 'Enter' ? addItemHandler() : ''
     }
     const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false)
-        setTitle(e.currentTarget.value)
+        error && setError('')
+        if(title.length < 20) {
+            setTitle(e.currentTarget.value)
+        } else {
+            setError('Max title length 20 letters')
+            setTitle(e.currentTarget.value.slice(0, -1))
+        }
     }
 
     const addItemHandler = () => {
-        title.trim() === '' ? setError(true) :
+        if (title.trim() === '') { setError('Title is required')
+        } else {
             callback(title)
+            setError('')
+        }
         setTitle('')
     }
 
     return (
         <>
-            <div className={s.error_title}>{error && 'Title is required'}</div>
-            <div>
-                <input placeholder={'write task title'}
-                       className={s.input}
-                       onKeyDown={addTaskKeyDownHandler}
-                       value={title}
-                       onChange={changeTaskTitleHandler}
-                       type={'text'}/>
+            <div className={s.input_block_wrapper}>
+                <TextField
+                    sx={{ input: {color: 'white'}}}
+                    size={"small"}
+                    error={!!error}
+                    id="outlined-error-helper-text"
+                    label={'Add item'}
+                    defaultValue="Hello World"
+                    helperText={error}
+                    onKeyDown={addTaskKeyDownHandler}
+                    value={title}
+                    onChange={changeTaskTitleHandler}
+                />
                 <SuperButton name={'+'} callback={addItemHandler}/>
             </div>
-
         </>
     );
 };
