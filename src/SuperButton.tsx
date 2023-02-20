@@ -1,7 +1,6 @@
 import React from 'react';
 import s from "./SuperButton.module.css";
 import {FilterValuesType} from "./App";
-import {Button} from "@mui/material";
 
 type SuperButtonPropsType = {
     name: string
