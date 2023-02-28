@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 type SuperButtonPropsType = {
     name: string
     callback: () => void
-    value?: string
+    value?: FilterValuesType
     filter?: FilterValuesType
     btnType?: string
 }
@@ -23,6 +23,9 @@ export const SuperButton: React.FC<SuperButtonPropsType> = (
     }
 ) => {
 
+    const activeButtonColor = !value ? 'primary' : value === filter ? 'secondary' : 'primary'
+
+
     return (
         btnType === 'trash'
             ? <IconButton aria-label="delete" onClick={callback}>
@@ -35,13 +38,13 @@ export const SuperButton: React.FC<SuperButtonPropsType> = (
                 </Button>
 
                 : <Button
+                    color={activeButtonColor}
                     className={s.btn}
                     variant="contained"
                     size={'small'}
                     onClick={callback}
                 >{name}
                 </Button>
-        // <button className={buttonClassName} onClick={callback}>{name}</button>
     );
 };
 
