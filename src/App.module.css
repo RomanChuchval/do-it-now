@@ -1,9 +1,9 @@
 
 .app {
   background-image: url(assets/wallpaper.jpeg);
-  background-position: center;
   height: max-content;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
   margin: 0;
   display: flex;
