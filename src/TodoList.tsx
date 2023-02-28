@@ -52,7 +52,7 @@ export const TodoList: React.FC<TodoListPropsType> = (
        }
 
         return (
-            <li key={task.id}>
+            <li className={s.task_list_item} key={task.id}>
                 <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
                 <EditableSpan title={task.taskName} callback={changeTaskTitleHandler} />
                 <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.isDone} />

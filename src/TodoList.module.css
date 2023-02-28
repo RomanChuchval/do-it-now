@@ -44,3 +44,11 @@
     margin-bottom: 15px;
 }
 
+.task_list_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 330px ;
+}
+
