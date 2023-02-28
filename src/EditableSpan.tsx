@@ -44,12 +44,6 @@ export const EditableSpan: React.FC<EditableSpanType> = (
                     value={newTitle}
                     autoFocus
                 />
-                //  <input className={s.input}
-                //          onChange={onChangeHandler}
-                //          value={newTitle}
-                //          onBlur={offEditModeHandler}
-                //          autoFocus
-                // />
                 : <span className={s.todolist_title} onDoubleClick={onEditModeHandler}>{title}</span>}
         </>
 

@@ -9,4 +9,7 @@
 
 .todolist_title {
     font-family: Roboto, sans-serif;
+    display: inline-block;
+    max-width: 230px;
+    word-break: break-all;
 }
