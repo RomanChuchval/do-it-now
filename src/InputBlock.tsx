@@ -39,19 +39,21 @@ export const InputBlock: React.FC<InputBlockPropsType> = (
     return (
         <>
             <div className={s.input_block_wrapper}>
-                <TextField
-                    sx={{ input: {color: 'white'}}}
-                    size={"small"}
-                    error={!!error}
-                    id="outlined-error-helper-text"
-                    label={'Add item'}
-                    defaultValue="Hello World"
-                    helperText={error}
-                    onKeyDown={addTaskKeyDownHandler}
-                    value={title}
-                    onChange={changeTaskTitleHandler}
-                />
-                <SuperButton name={'+'} callback={addItemHandler}/>
+                <div>
+                    <TextField
+                        sx={{ input: {color: 'white'}}}
+                        size={"small"}
+                        error={!!error}
+                        id="outlined-error"
+                        label={!!error ? error : 'Add item'}
+                        onKeyDown={addTaskKeyDownHandler}
+                        value={title}
+                        onChange={changeTaskTitleHandler}
+                    />
+                </div>
+                <div>
+                    <SuperButton name={'+'} callback={addItemHandler}/>
+                </div>
             </div>
         </>
     );
