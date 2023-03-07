@@ -1,32 +1,38 @@
 import {v1} from "uuid";
-import {TodoListDataType} from "../App";
+
 import {
-    addNewTaskAC, addNewTasksListForNewTodoListAC,
+    addNewTaskAC,
     changeTaskStatusAC,
-    changeTaskTitleAC, removeFullTasksListAC,
+    changeTaskTitleAC,
     removeTaskAC,
     todoListsDataReducer
 } from "./todoListsDataReducer";
+import {addNewTodoListAC, removeTodoListAC} from "./todoListsReducer";
+import {TodoListDataType} from "../../AppWithRedux";
 
-const todoListId1 = v1()
-const todoListId2 = v1()
+let todoListId1: string
+let todoListId2: string
+let startState: TodoListDataType
 
-const startState: TodoListDataType = {
-    [todoListId1]: [
-        {id: '1', taskName: 'React', isDone: false},
-        {id: '2', taskName: 'Redux', isDone: true},
-        {id: '3', taskName: 'Axios', isDone: false},
-    ],
-    [todoListId2]: [
-        {id: '1', taskName: 'HTML', isDone: true},
-        {id: '2', taskName: 'CSS', isDone: false},
-        {id: '3', taskName: 'Axios', isDone: true}
-    ]
-}
+beforeEach( () => {
+    todoListId1 = v1()
+    todoListId2 = v1()
+    startState = {
+        [todoListId1]: [
+            {id: '1', taskName: 'React', isDone: false},
+            {id: '2', taskName: 'Redux', isDone: true},
+            {id: '3', taskName: 'Axios', isDone: false},
+        ],
+        [todoListId2]: [
+            {id: '1', taskName: 'HTML', isDone: true},
+            {id: '2', taskName: 'CSS', isDone: false},
+            {id: '3', taskName: 'Axios', isDone: true}
+        ]
+    }
+})
 
 
 test('correct task should be removed', () => {
-
 
     const resultState = todoListsDataReducer(startState,removeTaskAC( todoListId1,'2' ))
 
@@ -82,7 +88,7 @@ test('should correct remove full tasksList', () => {
 
     const todoListID = todoListId2
 
-    const resultState = todoListsDataReducer(startState, removeFullTasksListAC(todoListID))
+    const resultState = todoListsDataReducer(startState, removeTodoListAC(todoListID))
 
     expect(resultState[todoListID]).toBeUndefined()
     expect(resultState[todoListId1]).toBe(startState[todoListId1])
@@ -91,14 +97,15 @@ test('should correct remove full tasksList', () => {
 
 test('should correct add new empty array for new TodoList tasks', () => {
 
-    const todoListNewId = v1()
+    const newTitle = 'newTitle'
+    const id = v1()
 
-    const resultState = todoListsDataReducer(startState, addNewTasksListForNewTodoListAC(todoListNewId))
+    const resultState = todoListsDataReducer(startState, addNewTodoListAC(newTitle, id))
 
-    expect(resultState[todoListNewId]).not.toBeUndefined()
-    expect(resultState[todoListNewId].length).toBe(0)
+
+    expect(resultState[id].length).toBe(0)
+    expect(resultState[id]).not.toBeUndefined()
     expect(resultState).not.toBe(startState)
-
 })
 
 

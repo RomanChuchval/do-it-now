@@ -1,29 +1,45 @@
-import {TodoListDataType} from "../App";
 import {v1} from "uuid";
+import {
+    ADD_NEW_TODO_LIST,
+    AddNewTodoListAC,
+    REMOVE_TODO_LIST,
+    RemoveTodoListACType,
+    todoListId1,
+    todoListId2
+} from "./todoListsReducer";
+import {TodoListDataType} from "../../AppWithRedux";
 
 const REMOVE_TASK = 'REMOVE-TASK'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
 const ADD_NEW_TASK = 'ADD-NEW-TASK'
 const CHANGE_TASK_TITLE = 'CHANGE-TASK-TITLE'
-const REMOVE_FULL_TASKS_LIST = 'REMOVE-FULL-TASKS-LIST'
-const ADD_NEW_TASKS_LIST_FOR_NEW_TODO_LIST = 'ADD-NEW-TASKS-LIST-FOR-NEW-TODO-LIST'
-
 
 type FinalActionType = RemoveTaskACType
     | ChangeTaskStatusACType
     | AddNewTaskACType
     | ChangeTaskTitleACType
-    | RemoveFullTasksListAC
-    | AddNewTasksListForNewTodoListAC
+    | AddNewTodoListAC
+    | RemoveTodoListACType
 
 type RemoveTaskACType = ReturnType<typeof removeTaskAC>
 type ChangeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
 type AddNewTaskACType = ReturnType<typeof addNewTaskAC>
 type ChangeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
-type RemoveFullTasksListAC = ReturnType<typeof removeFullTasksListAC>
-type AddNewTasksListForNewTodoListAC = ReturnType<typeof addNewTasksListForNewTodoListAC>
 
-export const todoListsDataReducer = (state: TodoListDataType, action: FinalActionType) => {
+const initialState: TodoListDataType = {
+    [todoListId1]: [
+        {id: v1(), taskName: 'React', isDone: false},
+        {id: v1(), taskName: 'Redux', isDone: true},
+        {id: v1(), taskName: 'Axios', isDone: false},
+    ],
+    [todoListId2]: [
+        {id: v1(), taskName: 'HTML', isDone: true},
+        {id: v1(), taskName: 'CSS', isDone: false},
+        {id: v1(), taskName: 'Axios', isDone: true}
+    ]
+}
+
+export const todoListsDataReducer = (state: TodoListDataType = initialState, action: FinalActionType) => {
 
     switch (action.type) {
         case REMOVE_TASK:
@@ -54,13 +70,12 @@ export const todoListsDataReducer = (state: TodoListDataType, action: FinalActio
                             ? {...t, taskName: action.payload.newTitle}
                             : t)
             }
-        case REMOVE_FULL_TASKS_LIST:
-            delete (state[action.payload.todoListId])
+        case REMOVE_TODO_LIST:
+            delete (state[action.payload.todoListID])
             return state
-        case ADD_NEW_TASKS_LIST_FOR_NEW_TODO_LIST:
-            return {
-                ...state, [action.payload.todoListId]: []
-            }
+
+        case ADD_NEW_TODO_LIST:
+            return {...state, [action.payload.id]: []}
         default:
             return state
     }
@@ -106,20 +121,20 @@ export const changeTaskTitleAC = (todoListId: string, taskId: string, newTitle: 
     } as const
 }
 
-export const removeFullTasksListAC = (todoListId: string) => {
-    return {
-        type: REMOVE_FULL_TASKS_LIST,
-        payload: {
-            todoListId
-        }
-    } as const
-}
+// export const removeFullTasksListAC = (todoListId: string) => {
+//     return {
+//         type: REMOVE_FULL_TASKS_LIST,
+//         payload: {
+//             todoListId
+//         }
+//     } as const
+// }
 
-export const addNewTasksListForNewTodoListAC = (todoListId: string) => {
-    return {
-        type: ADD_NEW_TASKS_LIST_FOR_NEW_TODO_LIST,
-        payload: {
-            todoListId
-        }
-    } as const
-}
+// export const addNewTasksListForNewTodoListAC = (todoListId: string) => {
+//     return {
+//         type: ADD_NEW_TASKS_LIST_FOR_NEW_TODO_LIST,
+//         payload: {
+//             todoListId
+//         }
+//     } as const
+// }

@@ -1,10 +1,11 @@
 import React, {ChangeEvent} from 'react';
-import {FilterValuesType, TodoListType} from "./App";
+
 import s from './TodoList.module.css'
 import {SuperButton} from "./SuperButton";
 import {InputBlock} from "./InputBlock";
 import {EditableSpan} from "./EditableSpan";
 import Checkbox from '@mui/material/Checkbox';
+import {FilterValuesType, TodoListType} from "./AppWithRedux";
 
 export type TodoListPropsType = {
     todoListId: string
