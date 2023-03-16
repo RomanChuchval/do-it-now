@@ -1,90 +1,79 @@
-import React, {ChangeEvent} from 'react';
-
+import React, {useCallback} from 'react';
 import s from './TodoList.module.css'
 import {SuperButton} from "./SuperButton";
 import {InputBlock} from "./InputBlock";
 import {EditableSpan} from "./EditableSpan";
-import Checkbox from '@mui/material/Checkbox';
 import {FilterValuesType, TodoListType} from "./AppWithRedux";
+import Task from "./Task";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "./redux/store";
+import {changeFilterAC, changeTodoListTitleAC, removeTodoListAC} from "./redux/reducers/todoListsReducer";
+import {addNewTaskAC} from "./redux/reducers/todoListsDataReducer";
 
 export type TodoListPropsType = {
     todoListId: string
     title: string
     filter: FilterValuesType
-    todoData: TodoListType[]
-    changeFilter: (todoListID: string, filter: FilterValuesType) => void
-    removeTodoList: (todoListID: string) => void
-    removeTask: (todoListID: string, taskID: string) => void
-    changeTaskStatus: (todoListID: string, taskID: string, newStatus: boolean) => void
-    addNewTask: (todoListID: string, title: string) => void
-    changeTodoListTitle: (todoListId: string, newTitle: string) => void
-    changeTaskTitle: (todoListId: string, taskId: string, newTitle: string) => void
 }
 
-export const TodoList: React.FC<TodoListPropsType> = (
+export const TodoList: React.FC<TodoListPropsType> = React.memo((
     {
         todoListId,
         title,
         filter,
-        todoData,
-        changeFilter,
-        removeTodoList,
-        removeTask,
-        changeTaskStatus,
-        addNewTask,
-        changeTodoListTitle,
-        changeTaskTitle
     }
 ) => {
-    const onChangeTaskTitle = (taskId:string, newTitle: string) => {
-        changeTaskTitle(todoListId, taskId, newTitle)
+
+    const tasks = useSelector<RootStateType, TodoListType[]>(state => state.tasks[todoListId])
+    const dispatch = useDispatch()
+
+    // filter tasks for map
+    // let filteredTasks = tasks
+    // if (filter === 'completed') filteredTasks = tasks.filter(el => el.isDone)
+    // else if (filter === 'active') filteredTasks = tasks.filter(el => !el.isDone)
+
+    const filteredTodoList = () => {
+        console.log('filtering')
+        return filter === 'completed' ? tasks.filter(el => el.isDone)
+            : filter === 'active' ? tasks.filter(el => !el.isDone)
+                : tasks
     }
 
-    let tasksList = todoData.map(task => {
-        const removeTaskHandler = () => {
-            removeTask(todoListId, task.id)
-        }
-        const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            changeTaskStatus(todoListId, task.id, e.currentTarget.checked)
-        }
+    // const todoData: TodoListType[] = filteredTodoList()
 
-       const changeTaskTitleHandler = (newTitle: string) => {
-           onChangeTaskTitle(task.id, newTitle)
-       }
-
-        return (
-            <li className={s.task_list_item} key={task.id}>
-                <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
-                <EditableSpan title={task.taskName} callback={changeTaskTitleHandler} />
-                <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.isDone} />
-            </li>
-        )
+    let tasksList = filteredTodoList().map(task => {
+        return <Task key={task.id}
+                     todoListId={todoListId}
+                     task={task}
+        />
     })
-    const changeFilterAllHandler = () => {
-        changeFilter(todoListId, 'all')
-    }
-    const changeFilterActiveHandler = () => {
-        changeFilter(todoListId, 'active')
-    }
-    const changeFilterCompletedHandler = () => {
-        changeFilter(todoListId, 'completed')
-    }
-    const removeTodoListHandler = () => {
-        removeTodoList(todoListId)
-    }
-    const addTaskHandler = (title: string) => {
-        addNewTask(todoListId, title)
-    }
 
-    const changeTodoListTitleHandler = (title: string) => {
-        changeTodoListTitle(todoListId, title)
-    }
+    const changeFilterAllHandler = useCallback(() => {
+        dispatch(changeFilterAC(todoListId, 'all'))
+    }, [dispatch, todoListId])
+    const changeFilterActiveHandler = useCallback(() => {
+        dispatch(changeFilterAC(todoListId, 'active'))
+    }, [dispatch, todoListId])
+    const changeFilterCompletedHandler = useCallback(() => {
+        dispatch(changeFilterAC(todoListId, 'completed'))
+    }, [dispatch, todoListId])
+    const removeTodoListHandler = useCallback(() => {
+        dispatch(removeTodoListAC(todoListId))
+    }, [dispatch, todoListId])
+    const addTaskHandler = useCallback((title: string) => {
+        dispatch(addNewTaskAC(todoListId, title))
+    }, [dispatch, todoListId])
+    const changeTodoListTitleHandler = useCallback((title: string) => {
+        dispatch(changeTodoListTitleAC(todoListId, title))
+    }, [dispatch, todoListId])
+
+
     return (
         <>
             <div className={s.todolist_wrapper}>
                 <div>
                     <div className={s.todolist_header_wrapper}>
-                        <EditableSpan callback={changeTodoListTitleHandler} title={title} />
+                        <EditableSpan callback={changeTodoListTitleHandler} title={title}/>
                         <SuperButton name={'Remove'} btnType={'delete'} callback={removeTodoListHandler}/>
                     </div>
                 </div>
@@ -107,6 +96,6 @@ export const TodoList: React.FC<TodoListPropsType> = (
             </div>
         </>
     );
-};
+});
 
 

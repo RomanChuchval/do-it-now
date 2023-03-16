@@ -13,7 +13,7 @@ type SuperButtonPropsType = {
     btnType?: string
 }
 
-export const SuperButton: React.FC<SuperButtonPropsType> = (
+export const SuperButton: React.FC<SuperButtonPropsType> = React.memo( (
     {
         name,
         callback,
@@ -46,5 +46,5 @@ export const SuperButton: React.FC<SuperButtonPropsType> = (
                 >{name}
                 </Button>
     );
-};
+});
 

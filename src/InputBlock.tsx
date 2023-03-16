@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import s from "./InputBlock.module.css";
 import {SuperButton} from "./SuperButton";
 import TextField from '@mui/material/TextField';
@@ -7,9 +7,9 @@ type InputBlockPropsType = {
     callback: (title: string) => void
 }
 
-export const InputBlock: React.FC<InputBlockPropsType> = (
+export const InputBlock: React.FC<InputBlockPropsType> = React.memo((
     {
-        callback,
+        callback
     }
 ) => {
     const [title, setTitle] = useState<string>('')
@@ -19,7 +19,7 @@ export const InputBlock: React.FC<InputBlockPropsType> = (
     }
     const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         error && setError('')
-        if(title.length < 20) {
+        if (title.length < 20) {
             setTitle(e.currentTarget.value)
         } else {
             setError('Max title length 20 letters')
@@ -27,21 +27,22 @@ export const InputBlock: React.FC<InputBlockPropsType> = (
         }
     }
 
-    const addItemHandler = () => {
-        if (title.trim() === '') { setError('Title is required')
+    const addItemHandler = useCallback (() => {
+        if (title.trim() === '') {
+            setError('Title is required')
         } else {
             callback(title)
             setError('')
         }
         setTitle('')
-    }
+    }, [callback, title])
 
     return (
         <>
             <div className={s.input_block_wrapper}>
                 <div>
                     <TextField
-                        sx={{ input: {color: 'white'}}}
+                        sx={{input: {color: 'white'}}}
                         size={"small"}
                         error={!!error}
                         id="outlined-error"
@@ -57,6 +58,6 @@ export const InputBlock: React.FC<InputBlockPropsType> = (
             </div>
         </>
     );
-};
+});
 
 
