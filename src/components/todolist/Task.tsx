@@ -3,14 +3,13 @@ import s from "./TodoList.module.css";
 import {SuperButton} from "../super-button/SuperButton";
 import {EditableSpan} from "../editable-span/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
-import {TodoListType} from "../../app/AppWithRedux";
 import {useDispatch} from "react-redux";
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../../redux/reducers/todoListsDataReducer";
-
+import {TaskStatuses, TaskType} from "../../api/todolist-api";
 
 type TaskPropsType = {
     todoListId: string
-    task: TodoListType
+    task: TaskType
 }
 
 const Task: React.FC<TaskPropsType> = React.memo( (
@@ -38,8 +37,8 @@ const Task: React.FC<TaskPropsType> = React.memo( (
         <>
             <li className={s.task_list_item}>
                 <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
-                <EditableSpan title={task.taskName} callback={changeTaskTitleHandler}/>
-                <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.isDone}/>
+                <EditableSpan title={task.title} callback={changeTaskTitleHandler}/>
+                <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.status === TaskStatuses.Completed}/>
             </li>
         </>
     );

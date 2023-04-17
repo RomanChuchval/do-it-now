@@ -3,7 +3,8 @@ import s from "./SuperButton.module.css";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import {FilterValuesType} from "../../app/AppWithRedux";
+import {FilterValuesType} from "../../redux/reducers/todoListsReducer";
+
 
 type SuperButtonPropsType = {
     name: string
@@ -33,10 +34,7 @@ export const SuperButton: React.FC<SuperButtonPropsType> = React.memo( (
             </IconButton>
 
             : btnType === 'delete'
-                ? <Button onClick={callback} variant="outlined" startIcon={<DeleteIcon/>}>
-                    Delete
-                </Button>
-
+                ? <Button onClick={callback} size={'small'} variant="outlined" startIcon={<DeleteIcon/>}/>
                 : <Button
                     color={activeButtonColor}
                     className={s.btn}

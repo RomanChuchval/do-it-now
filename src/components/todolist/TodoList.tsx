@@ -1,14 +1,18 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import s from './TodoList.module.css'
 import {SuperButton} from "../super-button/SuperButton";
 import {InputBlock} from "../input-block/InputBlock";
 import {EditableSpan} from "../editable-span/EditableSpan";
-import {FilterValuesType, TodoListType} from "../../app/AppWithRedux";
 import Task from "./Task";
-import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "../../redux/store";
-import {changeFilterAC, changeTodoListTitleAC, removeTodoListAC} from "../../redux/reducers/todoListsReducer";
-import {addNewTaskAC} from "../../redux/reducers/todoListsDataReducer";
+import {useAppDispatch, useAppSelector} from "../../redux/store";
+import {
+    changeFilterAC,
+    changeTodoListTitleAC, changeTodolistTitleTC,
+    FilterValuesType,
+    removeTodolistTC
+} from "../../redux/reducers/todoListsReducer";
+import {addNewTaskTC, fetchTasksTC} from "../../redux/reducers/todoListsDataReducer";
+import {TaskStatuses, TaskType} from "../../api/todolist-api";
 
 export type TodoListPropsType = {
     todoListId: string
@@ -24,22 +28,20 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     }
 ) => {
 
-    const tasks = useSelector<RootStateType, TodoListType[]>(state => state.tasks[todoListId])
-    const dispatch = useDispatch()
+    const tasks = useAppSelector<TaskType[]>(state => state.tasks[todoListId])
+    const dispatch = useAppDispatch()
+
+    useEffect( ()=>{
+        dispatch(fetchTasksTC(todoListId))
+    }, [] )
 
     // filter tasks for map
-    // let filteredTasks = tasks
-    // if (filter === 'completed') filteredTasks = tasks.filter(el => el.isDone)
-    // else if (filter === 'active') filteredTasks = tasks.filter(el => !el.isDone)
 
     const filteredTodoList = () => {
-        console.log('filtering')
-        return filter === 'completed' ? tasks.filter(el => el.isDone)
-            : filter === 'active' ? tasks.filter(el => !el.isDone)
+        return filter === 'completed' ? tasks.filter(el => el.status === TaskStatuses.Completed)
+            : filter === 'active' ? tasks.filter(el => el.status === TaskStatuses.New)
                 : tasks
     }
-
-    // const todoData: TodoListType[] = filteredTodoList()
 
     let tasksList = filteredTodoList().map(task => {
         return <Task key={task.id}
@@ -61,15 +63,15 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     }, [dispatch, todoListId])
 
     const removeTodoListHandler = useCallback(() => {
-        dispatch(removeTodoListAC(todoListId))
+        dispatch(removeTodolistTC(todoListId))
     }, [dispatch, todoListId])
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addNewTaskAC(todoListId, title))
+        dispatch(addNewTaskTC(todoListId, title))
     }, [dispatch, todoListId])
 
-    const changeTodoListTitleHandler = useCallback((title: string) => {
-        dispatch(changeTodoListTitleAC(todoListId, title))
+    const changeTodoListTitleHandler = useCallback((newTitle: string) => {
+        dispatch(changeTodolistTitleTC(todoListId, newTitle))
     }, [dispatch, todoListId])
 
 

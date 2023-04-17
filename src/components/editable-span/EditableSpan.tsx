@@ -36,7 +36,6 @@ export const EditableSpan: React.FC<EditableSpanType> = React.memo( (
         <>
             {editMode
                 ? <TextField
-                    sx={{input: {color: 'white'}}}
                     size={'small'}
                     id="outlined-basic"
                     label={title}

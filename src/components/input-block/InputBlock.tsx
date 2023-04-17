@@ -42,7 +42,6 @@ export const InputBlock: React.FC<InputBlockPropsType> = React.memo((
             <div className={s.input_block_wrapper}>
                 <div>
                     <TextField
-                        sx={{input: {color: 'white'}}}
                         size={"small"}
                         error={!!error}
                         id="outlined-error"
