@@ -41,7 +41,7 @@ export const todolistAPI = {
         return response.data
     },
     async updateTask(updatedTaskModel: TaskModelType, todolistId: string, taskId: string){
-        const response = await instance.put<TaskModelType, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-list/${todolistId}/tasks/${taskId}`)
+        const response = await instance.put<TaskModelType, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-list/${todolistId}/tasks/${taskId}`, updatedTaskModel)
         return response.data
     }
 }
