@@ -1,8 +1,7 @@
 import {v1} from "uuid";
 import {
     addNewTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
+    updateTaskAC,
     removeTaskAC, TodoListDataType,
     todoListsDataReducer
 } from "./todoListsDataReducer";

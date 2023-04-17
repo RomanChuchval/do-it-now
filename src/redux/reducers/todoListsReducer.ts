@@ -22,7 +22,7 @@ export const todoListsReducer = (state: TodolistDomainType[] = initialState, act
                 ? {...tl, filter: action.payload.filter}
                 : tl)
         case ADD_NEW_TODO_LIST:
-            return [...state, {...action.payload.newTodolist, filter: 'all'}]
+            return [{...action.payload.newTodolist, filter: 'all'}, ...state]
         case CHANGE_TODO_LIST_TITLE:
             return state.map(tl => tl.id === action.payload.todoListId
             ? {...tl, title: action.payload.newTitle}
