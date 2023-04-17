@@ -1,6 +1,7 @@
 
 .app {
-  background-image: url(assets/wallpaper.jpeg);
+  /*background-image: url(assets/wallpaper.jpeg);*/
+  background-color: #c7c1c1;
   height: max-content;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -10,7 +11,6 @@
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  width: content-box;
   min-height: 1100px;
   font-family: 'Roboto', sans-serif;
 }

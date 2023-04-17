@@ -6,7 +6,7 @@ import {
     removeTodoListAC,
     todoListsReducer
 } from "./todoListsReducer";
-import {FilterValuesType, TodoListsType} from "../../AppWithRedux";
+import {FilterValuesType, TodoListsType} from "../../app/AppWithRedux";
 
 let todoListId1: string
 let todoListId2: string

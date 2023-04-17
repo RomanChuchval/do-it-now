@@ -1,14 +1,14 @@
 import React, {useCallback} from 'react';
 import s from './TodoList.module.css'
-import {SuperButton} from "./SuperButton";
-import {InputBlock} from "./InputBlock";
-import {EditableSpan} from "./EditableSpan";
-import {FilterValuesType, TodoListType} from "./AppWithRedux";
+import {SuperButton} from "../super-button/SuperButton";
+import {InputBlock} from "../input-block/InputBlock";
+import {EditableSpan} from "../editable-span/EditableSpan";
+import {FilterValuesType, TodoListType} from "../../app/AppWithRedux";
 import Task from "./Task";
 import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "./redux/store";
-import {changeFilterAC, changeTodoListTitleAC, removeTodoListAC} from "./redux/reducers/todoListsReducer";
-import {addNewTaskAC} from "./redux/reducers/todoListsDataReducer";
+import {RootStateType} from "../../redux/store";
+import {changeFilterAC, changeTodoListTitleAC, removeTodoListAC} from "../../redux/reducers/todoListsReducer";
+import {addNewTaskAC} from "../../redux/reducers/todoListsDataReducer";
 
 export type TodoListPropsType = {
     todoListId: string
@@ -51,18 +51,23 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     const changeFilterAllHandler = useCallback(() => {
         dispatch(changeFilterAC(todoListId, 'all'))
     }, [dispatch, todoListId])
+
     const changeFilterActiveHandler = useCallback(() => {
         dispatch(changeFilterAC(todoListId, 'active'))
     }, [dispatch, todoListId])
+
     const changeFilterCompletedHandler = useCallback(() => {
         dispatch(changeFilterAC(todoListId, 'completed'))
     }, [dispatch, todoListId])
+
     const removeTodoListHandler = useCallback(() => {
         dispatch(removeTodoListAC(todoListId))
     }, [dispatch, todoListId])
+
     const addTaskHandler = useCallback((title: string) => {
         dispatch(addNewTaskAC(todoListId, title))
     }, [dispatch, todoListId])
+
     const changeTodoListTitleHandler = useCallback((title: string) => {
         dispatch(changeTodoListTitleAC(todoListId, title))
     }, [dispatch, todoListId])

@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
 import s from './App.module.css';
-import {TodoList} from "./TodoList";
+import {TodoList} from "../components/todolist/TodoList";
 import {v1} from "uuid";
-import {InputBlock} from "./InputBlock";
-import {addNewTodoListAC} from "./redux/reducers/todoListsReducer";
-import ButtonAppBar from "./Appbar";
+import {InputBlock} from "../components/input-block/InputBlock";
+import {addNewTodoListAC} from "../redux/reducers/todoListsReducer";
+import ButtonAppBar from "./app-bar/Appbar";
 import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "./redux/store";
+import {RootStateType} from "../redux/store";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodoListsType = {

@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useCallback} from 'react';
 import s from "./TodoList.module.css";
-import {SuperButton} from "./SuperButton";
-import {EditableSpan} from "./EditableSpan";
+import {SuperButton} from "../super-button/SuperButton";
+import {EditableSpan} from "../editable-span/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
-import {TodoListType} from "./AppWithRedux";
+import {TodoListType} from "../../app/AppWithRedux";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/reducers/todoListsDataReducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../../redux/reducers/todoListsDataReducer";
 
 
 type TaskPropsType = {

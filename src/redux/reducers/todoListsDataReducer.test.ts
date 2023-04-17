@@ -8,7 +8,7 @@ import {
     todoListsDataReducer
 } from "./todoListsDataReducer";
 import {addNewTodoListAC, removeTodoListAC} from "./todoListsReducer";
-import {TodoListDataType} from "../../AppWithRedux";
+import {TodoListDataType} from "../../app/AppWithRedux";
 
 let todoListId1: string
 let todoListId2: string

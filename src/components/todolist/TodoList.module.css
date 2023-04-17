@@ -1,5 +1,4 @@
 .todolist_wrapper {
-    color: white;
     margin: 25px;
     padding: 15px;
     display: flex;
@@ -7,8 +6,8 @@
     align-items: center;
     width: 350px;
     height: max-content;
-    border-radius: 15px;
-    background-color: rgba(234, 184, 210, 0.5);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px, rgba(0, 0, 0, 0.23) 0 3px 6px;
 }
 
 
@@ -50,5 +49,9 @@
     gap: 10px;
     justify-content: flex-start;
     width: 330px ;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 0, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+    margin: 5px;
 }
+
+
 

@@ -7,7 +7,7 @@ import {
     todoListId1,
     todoListId2
 } from "./todoListsReducer";
-import {TodoListDataType} from "../../AppWithRedux";
+import {TodoListDataType} from "../../app/AppWithRedux";
 
 const REMOVE_TASK = 'REMOVE-TASK'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
