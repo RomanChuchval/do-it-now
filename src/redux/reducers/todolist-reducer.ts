@@ -1,5 +1,7 @@
 import {StatusCodes, todolistAPI, TodolistType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
+import {setLoadingAC} from "./app-reducer";
+import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
 
 export const REMOVE_TODO_LIST = 'REMOVE-TODO-LIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
@@ -25,8 +27,8 @@ export const todolistReducer = (state: TodolistDomainType[] = initialState, acti
             return [{...action.payload.newTodolist, filter: 'all'}, ...state]
         case CHANGE_TODO_LIST_TITLE:
             return state.map(tl => tl.id === action.payload.todoListId
-            ? {...tl, title: action.payload.newTitle}
-            : tl)
+                ? {...tl, title: action.payload.newTitle}
+                : tl)
         default:
             return state
     }
@@ -47,24 +49,63 @@ export const setTodolistsAC = (data: TodolistType[]) => (
 
 //Thunks
 export const changeTodolistTitleTC = (todolistId: string, newTitle: string) => async (dispatch: Dispatch) => {
-    const responseData = await todolistAPI.updateTodolistTitle(newTitle, todolistId)
-    if(responseData.data.resultCode === StatusCodes.Ok) {
-        dispatch(changeTodoListTitleAC(todolistId, newTitle))
+    try {
+        dispatch(setLoadingAC('loading'))
+        const response = await todolistAPI.updateTodolistTitle(newTitle, todolistId)
+        if (response.data.resultCode === StatusCodes.Ok) {
+            dispatch(changeTodoListTitleAC(todolistId, newTitle))
+            dispatch(setLoadingAC('success'))
+        } else {
+            if (response.data.resultCode === StatusCodes.Error) {
+                appErrorServerHandler(response.data, dispatch)
+            }
+        }
+    } catch (e) {
+        appErrorNetworkHandler(e, dispatch)
     }
 }
 export const removeTodolistTC = (todolistId: string) => async (dispatch: Dispatch) => {
-    await todolistAPI.deleteTodolist(todolistId)
-    dispatch(removeTodoListAC(todolistId))
+    try {
+        dispatch(setLoadingAC('loading'))
+        const response = await todolistAPI.deleteTodolist(todolistId)
+        if (response.data.resultCode === StatusCodes.Ok) {
+            dispatch(removeTodoListAC(todolistId))
+            dispatch(setLoadingAC('success'))
+        } else {
+            if (response.data.resultCode === StatusCodes.Error) {
+                appErrorServerHandler(response.data, dispatch)
+            }
+        }
+    } catch (e) {
+        appErrorNetworkHandler(e, dispatch)
+    }
+
 }
 export const createTodolistTC = (title: string) => async (dispatch: Dispatch) => {
-    const responseData = await todolistAPI.createTodolist(title)
-    if(responseData.data.resultCode === StatusCodes.Ok) {
-        dispatch(addNewTodoListAC(responseData.data.data.item))
+    try {
+        dispatch(setLoadingAC('loading'))
+        const response = await todolistAPI.createTodolist(title)
+        if (response.data.resultCode === StatusCodes.Ok) {
+            dispatch(addNewTodoListAC(response.data.data.item))
+            dispatch(setLoadingAC('success'))
+        } else {
+            if (response.data.resultCode === StatusCodes.Error) {
+                appErrorServerHandler(response.data, dispatch)
+            }
+        }
+    } catch (e) {
+        appErrorNetworkHandler(e, dispatch)
     }
 }
 export const fetchTodolistsTC = () => async (dispatch: Dispatch) => {
-    const responseData = await todolistAPI.getTodolists()
-    dispatch(setTodolistsAC(responseData.data))
+    try {
+        dispatch(setLoadingAC('loading'))
+        const response = await todolistAPI.getTodolists()
+        dispatch(setTodolistsAC(response.data))
+        dispatch(setLoadingAC('success'))
+    } catch (e) {
+        appErrorNetworkHandler(e, dispatch)
+    }
 }
 
 // Types
@@ -72,7 +113,7 @@ export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
 }
-type TodolistsActionsType = RemoveTodoListACType
+export type TodolistsActionsType = RemoveTodoListACType
     | ChangeTodoListTitleACType
     | AddNewTodoListACType
     | ChangeFilterACType

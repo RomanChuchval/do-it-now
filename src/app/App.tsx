@@ -9,15 +9,19 @@ import {
 } from "../redux/reducers/todolist-reducer";
 import ButtonAppBar from "./app-bar/Appbar";
 import {useAppDispatch, useAppSelector} from "../redux/store";
+import LinearProgress from "@mui/material/LinearProgress";
+import {AppStatus} from "../redux/reducers/app-reducer";
+import {ErrorSnackbar} from "../components/snackbar/ErrorSnackbar";
 
 
 const App = () => {
     const dispatch = useAppDispatch()
     const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todoLists)
+    const appStatus = useAppSelector<AppStatus>(state => state.app.status)
 
     useEffect( ()=>{
         dispatch(fetchTodolistsTC())
-    }, [] )
+    }, [dispatch] )
 
     const addNewTodoList = useCallback ((title: string) => {
         dispatch(createTodolistTC(title))
@@ -37,6 +41,7 @@ const App = () => {
     return (
         <>
             <ButtonAppBar/>
+            {appStatus === 'loading' && <LinearProgress color="secondary" />}
             <div className={s.app}>
                 <div className={s.add_todoList_block}>
                     <InputBlock callback={addNewTodoList}/>
@@ -44,6 +49,7 @@ const App = () => {
                 <div className={s.todoLists_wrapper}>
                     {mappedTodoList}
                 </div>
+                <ErrorSnackbar />
             </div>
         </>
 
