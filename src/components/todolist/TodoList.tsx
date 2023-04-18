@@ -13,11 +13,13 @@ import {
 } from "../../redux/reducers/todolist-reducer";
 import {addNewTaskTC, fetchTasksTC} from "../../redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolist-api";
+import {AppStatus} from "../../redux/reducers/app-reducer";
 
 export type TodoListPropsType = {
     todoListId: string
     title: string
     filter: FilterValuesType
+    todolistStatus: AppStatus
 }
 
 export const TodoList: React.FC<TodoListPropsType> = React.memo((
@@ -25,6 +27,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
         todoListId,
         title,
         filter,
+        todolistStatus
     }
 ) => {
 
@@ -33,7 +36,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
 
     useEffect( ()=>{
         dispatch(fetchTasksTC(todoListId))
-    }, [] )
+    }, [todoListId, dispatch] )
 
     // filter tasks for map
 
@@ -47,6 +50,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
         return <Task key={task.id}
                      todoListId={todoListId}
                      task={task}
+                     todolistStatus={todolistStatus}
         />
     })
 
@@ -77,7 +81,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
 
     return (
         <>
-            <div className={s.todolist_wrapper}>
+            <div className={`${s.todolist_wrapper} ${todolistStatus === 'loading' && s.todolist_disable}`}>
                 <div>
                     <div className={s.todolist_header_wrapper}>
                         <EditableSpan callback={changeTodoListTitleHandler} title={title}/>

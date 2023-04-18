@@ -32,6 +32,7 @@ const App = () => {
             <TodoList
                 key={tl.id}
                 todoListId={tl.id}
+                todolistStatus={tl.todolistStatus}
                 title={tl.title}
                 filter={tl.filter}
             />

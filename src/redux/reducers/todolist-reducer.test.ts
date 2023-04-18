@@ -16,8 +16,8 @@ beforeEach(() => {
     todoListId2 = '2'
 
     startState = [
-        {id: todoListId1, title: 'What to do', filter: 'all', addedDate: '11.12.2022', order: '1'},
-        {id: todoListId2, title: 'What to buy', filter: 'all', addedDate: '09.02.2021', order: '2'}
+        {id: todoListId1, title: 'What to do', filter: 'all', addedDate: '11.12.2022', order: '1', todolistStatus: 'idle'},
+        {id: todoListId2, title: 'What to buy', filter: 'all', addedDate: '09.02.2021', order: '2', todolistStatus: 'idle'}
     ]
 })
 

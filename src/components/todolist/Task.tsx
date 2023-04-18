@@ -6,16 +6,19 @@ import Checkbox from "@mui/material/Checkbox";
 import {removeTaskTC, updateTaskTC} from "../../redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolist-api";
 import {useAppDispatch} from "../../redux/store";
+import {AppStatus} from "../../redux/reducers/app-reducer";
 
 type TaskPropsType = {
     todoListId: string
     task: TaskType
+    todolistStatus: AppStatus
 }
 
 const Task: React.FC<TaskPropsType> = React.memo( (
     {
         todoListId,
-        task
+        task,
+        todolistStatus
     }
 ) => {
 
@@ -39,7 +42,10 @@ const Task: React.FC<TaskPropsType> = React.memo( (
             <li className={s.task_list_item}>
                 <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
                 <EditableSpan title={task.title} callback={changeTaskTitleHandler}/>
-                <Checkbox color="primary" onChange={changeTaskStatusHandler} checked={task.status === TaskStatuses.Completed}/>
+                <Checkbox color="primary" onChange={changeTaskStatusHandler}
+                          checked={task.status === TaskStatuses.Completed}
+                          disabled={todolistStatus === 'loading'}
+                />
             </li>
         </>
     );

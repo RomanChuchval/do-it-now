@@ -2,7 +2,7 @@ import {
     ADD_NEW_TODO_LIST,
     AddNewTodoListACType,
     REMOVE_TODO_LIST,
-    RemoveTodoListACType, SET_TODO_LISTS, SetTodolistsACType,
+    RemoveTodoListACType, SET_TODO_LISTS, SetTodoListsACType, setTodolistStatusAC,
 } from "./todolist-reducer";
 import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
 import {Dispatch} from "redux";
@@ -84,6 +84,7 @@ export const addNewTaskTC = (todolistId: string, title: string) => async (dispat
 export const removeTaskTC = (todolistId: string, taskId: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoadingAC('loading'))
+        dispatch(setTodolistStatusAC('loading',todolistId ))
         const response = await todolistAPI.removeTask(todolistId, taskId)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(removeTaskAC(todolistId, taskId))
@@ -95,6 +96,8 @@ export const removeTaskTC = (todolistId: string, taskId: string) => async (dispa
         }
     } catch (e) {
         appErrorNetworkHandler(e, dispatch)
+    } finally {
+        dispatch(setTodolistStatusAC('success',todolistId ))
     }
 }
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
@@ -129,6 +132,7 @@ export const updateTaskTC = (updatedTaskField: UpdatedTaskFieldType, taskId: str
         }
         try {
             dispatch(setLoadingAC('loading'))
+            dispatch(setTodolistStatusAC('loading',todolistId ))
             const response = await todolistAPI.updateTask(updatedTask, todolistId, taskId)
             if (response.data.resultCode === StatusCodes.Ok) {
                 dispatch(updateTaskAC(todolistId, taskId, response.data.data.item))
@@ -140,6 +144,8 @@ export const updateTaskTC = (updatedTaskField: UpdatedTaskFieldType, taskId: str
             }
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
+        } finally {
+            dispatch(setTodolistStatusAC('success',todolistId ))
         }
     }
 
@@ -153,7 +159,7 @@ export type TasksActionType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof setTasksAC>
     | RemoveTodoListACType
     | AddNewTodoListACType
-    | SetTodolistsACType
+    | SetTodoListsACType
 
 type UpdatedTaskFieldType = {
     title?: string
