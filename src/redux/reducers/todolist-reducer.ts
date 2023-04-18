@@ -11,7 +11,7 @@ export const SET_TODO_LISTS = 'SET_TODO_LISTS'
 // Reducer
 const initialState: TodolistDomainType[] = []
 
-export const todoListsReducer = (state: TodolistDomainType[] = initialState, action: TodolistsActionsType): TodolistDomainType[] => {
+export const todolistReducer = (state: TodolistDomainType[] = initialState, action: TodolistsActionsType): TodolistDomainType[] => {
     switch (action.type) {
         case SET_TODO_LISTS:
             return action.payload.data.map(tl => ({...tl, filter: 'all'}))

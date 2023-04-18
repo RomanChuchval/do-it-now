@@ -7,11 +7,11 @@ import Task from "./Task";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {
     changeFilterAC,
-    changeTodoListTitleAC, changeTodolistTitleTC,
+    changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC
-} from "../../redux/reducers/todoListsReducer";
-import {addNewTaskTC, fetchTasksTC} from "../../redux/reducers/todoListsDataReducer";
+} from "../../redux/reducers/todolist-reducer";
+import {addNewTaskTC, fetchTasksTC} from "../../redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolist-api";
 
 export type TodoListPropsType = {

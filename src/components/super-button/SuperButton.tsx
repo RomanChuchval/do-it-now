@@ -3,7 +3,7 @@ import s from "./SuperButton.module.css";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import {FilterValuesType} from "../../redux/reducers/todoListsReducer";
+import {FilterValuesType} from "../../redux/reducers/todolist-reducer";
 
 
 type SuperButtonPropsType = {

@@ -3,7 +3,7 @@ import {
     AddNewTodoListACType,
     REMOVE_TODO_LIST,
     RemoveTodoListACType, SET_TODO_LISTS, SetTodolistsACType,
-} from "./todoListsReducer";
+} from "./todolist-reducer";
 import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
@@ -15,7 +15,7 @@ const SET_TASKS = 'SET_TASKS'
 
 //Reducer
 const initialState: TodoListDataType = {}
-export const todoListsDataReducer = (state: TodoListDataType = initialState, action: FinalActionType): TodoListDataType => {
+export const tasksReducer = (state: TodoListDataType = initialState, action: FinalActionType): TodoListDataType => {
 
     switch (action.type) {
         case SET_TODO_LISTS:

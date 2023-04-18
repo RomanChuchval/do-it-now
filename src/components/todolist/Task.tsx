@@ -3,7 +3,7 @@ import s from "./TodoList.module.css";
 import {SuperButton} from "../super-button/SuperButton";
 import {EditableSpan} from "../editable-span/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
-import {removeTaskTC, updateTaskTC} from "../../redux/reducers/todoListsDataReducer";
+import {removeTaskTC, updateTaskTC} from "../../redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolist-api";
 import {useAppDispatch} from "../../redux/store";
 

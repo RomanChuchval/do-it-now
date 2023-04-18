@@ -1,14 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
 import s from './App.module.css';
 import {TodoList} from "../components/todolist/TodoList";
-import {v1} from "uuid";
 import {InputBlock} from "../components/input-block/InputBlock";
 import {
-    addNewTodoListAC,
     createTodolistTC,
     fetchTodolistsTC,
     TodolistDomainType
-} from "../redux/reducers/todoListsReducer";
+} from "../redux/reducers/todolist-reducer";
 import ButtonAppBar from "./app-bar/Appbar";
 import {useAppDispatch, useAppSelector} from "../redux/store";
 
