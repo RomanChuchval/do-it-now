@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import {FormDataType} from "../components/Login";
 
 
 const instance = axios.create({
@@ -15,26 +16,38 @@ export const todolistAPI = {
          return instance.get<TodolistType[]>('todo-lists')
     },
     createTodolist(title: string) {
-        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TodolistType}>>>('todo-lists', {title})
+        return instance.post<ResponseType<{item: TodolistType}>, AxiosResponse<ResponseType<{item: TodolistType}>>>('todo-lists', {title})
     },
     deleteTodolist(id: string){
         return instance.delete<ResponseType>(`todo-lists/${id}`)
     },
     updateTodolistTitle(title: string, id: string){
-        return instance.put<{title: string}, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title})
+        return instance.put<ResponseType, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title})
     },
     //Requests for Tasks
     getTasks(id: string){
         return instance.get<ResponseTasksType>(`todo-lists/${id}/tasks`)
     },
     createTask(id: string, title: string) {
-        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${id}/tasks`, {title})
+        return instance.post<ResponseType<{item: TaskType}>, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${id}/tasks`, {title})
     },
     removeTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTask(updatedTaskModel: TaskModelType, todolistId: string, taskId: string){
-        return instance.put<TaskModelType, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${todolistId}/tasks/${taskId}`, updatedTaskModel)
+        return instance.put<ResponseType<{item: TaskType}>, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${todolistId}/tasks/${taskId}`, updatedTaskModel)
+    }
+}
+
+export const authAPI = {
+    login(loginData: FormDataType) {
+        return instance.post<ResponseType<{userId: number}>, AxiosResponse<ResponseType<{userId: number}>>>('auth/login', loginData)
+    },
+    logout(){
+        return instance.delete<ResponseType, AxiosResponse<ResponseType>>('auth/login')
+    },
+    me(){
+        return instance.get<ResponseType<AuthMeDataType>>('auth/me')
     }
 }
 
@@ -78,6 +91,11 @@ export type TaskModelType = {
     priority: number
     startDate: string
     deadline: string
+}
+export type AuthMeDataType = {
+    id: number
+    email: string
+    login: string
 }
 export enum TaskStatuses {
     New = 0,

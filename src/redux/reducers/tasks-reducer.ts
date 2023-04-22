@@ -17,7 +17,7 @@ const SET_TASKS = 'SET_TASKS'
 
 //Reducer
 const initialState: TodoListDataType = {}
-export const tasksReducer = (state: TodoListDataType = initialState, action: TasksActionType): TodoListDataType => {
+export const tasksReducer = (state: TodoListDataType = initialState, action: TasksActionsType): TodoListDataType => {
 
     switch (action.type) {
         case SET_TODO_LISTS:
@@ -153,7 +153,7 @@ export const updateTaskTC = (updatedTaskField: UpdatedTaskFieldType, taskId: str
 export type TodoListDataType = {
     [key: string]: TaskType[]
 }
-export type TasksActionType = ReturnType<typeof removeTaskAC>
+export type TasksActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof updateTaskAC>
     | ReturnType<typeof addNewTaskAC>
     | ReturnType<typeof setTasksAC>

@@ -1,15 +1,22 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import s from "../../app/App.module.css";
 import {TodoList} from "./TodoList";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {createTodolistTC, TodolistDomainType} from "../../redux/reducers/todolist-reducer";
+import {createTodolistTC, fetchTodolistsTC, TodolistDomainType} from "../../redux/reducers/todolist-reducer";
 import {InputBlock} from "../input-block/InputBlock";
+import {Navigate} from "react-router-dom";
 
-export const TodolistsList = () => {
+export const TodolistsList = memo(() => {
+
     const dispatch = useAppDispatch()
     const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todoLists)
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
-    const mappedTodoList = todoLists.map(tl => {
+    useEffect( ()=>{
+        dispatch(fetchTodolistsTC())
+    }, [dispatch] )
+
+    const mappedTodoList =  todoLists.map(tl => {
         return (
             <TodoList
                 key={tl.id}
@@ -25,6 +32,10 @@ export const TodolistsList = () => {
         dispatch(createTodolistTC(title))
     }, [dispatch])
 
+    if(!isLoggedIn) {
+        return <Navigate to={'/login'} />
+    }
+
     return (
         <>
             <div className={s.add_todoList_block}>
@@ -35,5 +46,5 @@ export const TodolistsList = () => {
             </div>
         </>
     );
-};
+});
 

@@ -39,10 +39,9 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     }, [todoListId, dispatch] )
 
     // filter tasks for map
-
     const filteredTodoList = () => {
         return filter === 'completed' ? tasks.filter(el => el.status === TaskStatuses.Completed)
-            : filter === 'active' ? tasks.filter(el => el.status === TaskStatuses.New)
+            : filter === 'active' ? tasks.filter(el => el.status === TaskStatuses.inProgress)
                 : tasks
     }
 

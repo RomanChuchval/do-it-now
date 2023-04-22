@@ -9,6 +9,9 @@ import Checkbox from "@mui/material/Checkbox";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {object, string} from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {Navigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../redux/store";
+import {loginTC} from "../redux/reducers/auth-reducer";
 
 export type FormDataType = {
     email: string,
@@ -26,6 +29,8 @@ const formSchema = object({
 })
 
 export const Login = () => {
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const dispatch = useAppDispatch()
 
     const {handleSubmit, control, reset, formState: { errors } } = useForm<FormDataType>({
         defaultValues: {
@@ -37,20 +42,24 @@ export const Login = () => {
         resolver: yupResolver(formSchema)
     });
     const onSubmit: SubmitHandler<FormDataType> = (data) => {
-        console.log(data);
+        dispatch(loginTC(data))
         reset()
+    }
+
+    if(isLoggedIn) {
+        return <Navigate to={'/'} />
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl>
+            <FormControl sx={{minWidth: '350px'}}>
                 <FormLabel>
-                    <p>To log in get registered
+                    <p>Log in or registered
                         <a href={'https://social-network.samuraijs.com/'}
                            target={'_blank'} rel={'noreferrer'}> here
                         </a>
                     </p>
-                    <p>or use common test account credentials:</p>
+                    <p>Use common test account credentials:</p>
                     <p>Email: free@samuraijs.com</p>
                     <p>Password: free</p>
                 </FormLabel>
@@ -63,6 +72,7 @@ export const Login = () => {
                                        margin="normal"
                                        error={!!errors.email}
                                        helperText={errors.email?.message}
+                                       size={'small'}
                             /> }
                     />
                    <Controller
@@ -74,6 +84,7 @@ export const Login = () => {
                                    helperText={errors.password?.message}
                                    label="Password"
                                    margin="normal"
+                                   size={'small'}
                         /> }
                    />
                     <Controller
