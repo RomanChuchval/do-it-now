@@ -1,7 +1,7 @@
 
 .app {
   /*background-image: url(assets/wallpaper.jpeg);*/
-  background-color: #e8dfdf;
+  background-color: #efeaea;
   height: max-content;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -25,4 +25,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.progress_container {
+  width: 100%;
+  height: 10px;
+  background-color: #efeaea;
 }
