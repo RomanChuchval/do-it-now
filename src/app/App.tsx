@@ -8,7 +8,7 @@ import {ErrorSnackbar} from "../components/snackbar/ErrorSnackbar";
 import {TodolistsList} from "../components/todolist/TodolistsList";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "../components/Login";
-import {initializeMeTC} from "../redux/reducers/auth-reducer";
+import {initializeAppTC} from "../redux/reducers/auth-reducer";
 import {CircularProgress} from "@mui/material";
 
 
@@ -18,7 +18,7 @@ const App = () => {
     const isInitialized = useAppSelector<boolean>(state => state.auth.initialized)
 
     useEffect(() => {
-        dispatch(initializeMeTC())
+        dispatch(initializeAppTC())
     }, [dispatch])
 
     return (

@@ -3,6 +3,8 @@ import {Dispatch} from "redux";
 import {AppStatus, setLoadingAC} from "./app-reducer";
 import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
 import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "./auth-reducer";
+import {fetchTasksTC} from "./tasks-reducer";
+import {AppThunkDispatch} from "../store";
 
 export const REMOVE_TODO_LIST = 'REMOVE-TODO-LIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
@@ -113,12 +115,12 @@ export const createTodolistTC = (title: string) => async (dispatch: Dispatch) =>
         appErrorNetworkHandler(e, dispatch)
     }
 }
-export const fetchTodolistsTC = () => async (dispatch: Dispatch) => {
+export const fetchTodolistsTC = () => async (dispatch: AppThunkDispatch) => {
+    dispatch(setLoadingAC('loading'))
     try {
-        dispatch(setLoadingAC('loading'))
         const response = await todolistAPI.getTodolists()
         dispatch(setTodolistsAC(response.data))
-        dispatch(setLoadingAC('success'))
+        response.data.forEach( (el) => dispatch(fetchTasksTC(el.id)))
     } catch (e) {
         appErrorNetworkHandler(e, dispatch)
     }

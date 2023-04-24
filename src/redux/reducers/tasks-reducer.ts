@@ -107,8 +107,8 @@ export const removeTaskTC = (todolistId: string, taskId: string) => async (dispa
     }
 }
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
+    dispatch(setLoadingAC('loading'))
     try {
-        dispatch(setLoadingAC('loading'))
         const response = await todolistAPI.getTasks(todolistId)
         if (response.status === 200) {
             dispatch(setTasksAC(response.data.items, todolistId))

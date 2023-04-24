@@ -13,8 +13,10 @@ export const TodolistsList = memo(() => {
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
     useEffect( ()=>{
-        dispatch(fetchTodolistsTC())
-    }, [dispatch] )
+        if(isLoggedIn) {
+            dispatch(fetchTodolistsTC())
+        }
+    }, [dispatch, isLoggedIn] )
 
     const mappedTodoList =  todoLists.map(tl => {
         return (

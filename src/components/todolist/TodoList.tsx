@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import s from './TodoList.module.css'
 import {SuperButton} from "../super-button/SuperButton";
 import {InputBlock} from "../input-block/InputBlock";
@@ -11,7 +11,7 @@ import {
     FilterValuesType,
     removeTodolistTC
 } from "../../redux/reducers/todolist-reducer";
-import {addNewTaskTC, fetchTasksTC} from "../../redux/reducers/tasks-reducer";
+import {addNewTaskTC} from "../../redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolist-api";
 import {AppStatus} from "../../redux/reducers/app-reducer";
 
@@ -33,10 +33,6 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
 
     const tasks = useAppSelector<TaskType[]>(state => state.tasks[todoListId])
     const dispatch = useAppDispatch()
-
-    useEffect( ()=>{
-        dispatch(fetchTasksTC(todoListId))
-    }, [todoListId, dispatch] )
 
     // filter tasks for map
     const filteredTodoList = () => {

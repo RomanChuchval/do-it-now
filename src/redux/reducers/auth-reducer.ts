@@ -26,7 +26,6 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
     }
 }
 
-
 //ACTION_CREATORS
 export const toggleIsLoggedInAC = (status: boolean) => ({type: TOGGLE_IS_LOGGED_IN, payload: {status}} as const)
 export const setIsInitializedAC = (status: boolean) => ({type: SET_IS_INITIALIZED, payload: {status}} as const)
@@ -62,13 +61,13 @@ export const logoutTC = () => async (dispatch: AppThunkDispatch) => {
         appErrorNetworkHandler(e, dispatch)
     }
 }
-export const initializeMeTC = () => async (dispatch: AppThunkDispatch) => {
+export const initializeAppTC = () => async (dispatch: AppThunkDispatch) => {
     try {
         const response = await authAPI.me()
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(toggleIsLoggedInAC(true))
         } else {
-            dispatch(toggleIsLoggedInAC(false))
+            appErrorServerHandler(response.data, dispatch)
         }
     } catch (e) {
         appErrorNetworkHandler(e, dispatch)
