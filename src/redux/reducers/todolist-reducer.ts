@@ -2,6 +2,7 @@ import {StatusCodes, todolistAPI, TodolistType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppStatus, setLoadingAC} from "./app-reducer";
 import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "./auth-reducer";
 
 export const REMOVE_TODO_LIST = 'REMOVE-TODO-LIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
@@ -32,8 +33,10 @@ export const todolistReducer = (state: TodolistDomainType[] = initialState, acti
                 : tl)
         case SET_TODO_LIST_STATUS:
             return state.map(tl => tl.id === action.payload.todolistId
-            ? {...tl, todolistStatus: action.payload.status}
-            : tl)
+                ? {...tl, todolistStatus: action.payload.status}
+                : tl)
+        case CLEAN_STATE_AFTER_LOGOUT:
+            return []
         default:
             return state
     }
@@ -54,12 +57,11 @@ export const setTodolistsAC = (data: TodolistType[]) => (
     {type: SET_TODO_LISTS, payload: {data}}) as const
 
 
-
 //Thunks
 export const changeTodolistTitleTC = (todolistId: string, newTitle: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoadingAC('loading'))
-        dispatch(setTodolistStatusAC('loading',todolistId ))
+        dispatch(setTodolistStatusAC('loading', todolistId))
         const response = await todolistAPI.updateTodolistTitle(newTitle, todolistId)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(changeTodoListTitleAC(todolistId, newTitle))
@@ -134,6 +136,7 @@ export type TodolistsActionsType = RemoveTodoListACType
     | ChangeFilterACType
     | SetTodoListsACType
     | SetTodolistStatusACType
+    | CleanStateAfterLogoutACType
 type ChangeTodoListTitleACType = ReturnType<typeof changeTodoListTitleAC>
 export type RemoveTodoListACType = ReturnType<typeof removeTodoListAC>
 export type AddNewTodoListACType = ReturnType<typeof addNewTodoListAC>

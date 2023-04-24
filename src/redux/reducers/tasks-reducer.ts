@@ -2,13 +2,17 @@ import {
     ADD_NEW_TODO_LIST,
     AddNewTodoListACType,
     REMOVE_TODO_LIST,
-    RemoveTodoListACType, SET_TODO_LISTS, SetTodoListsACType, setTodolistStatusAC,
+    RemoveTodoListACType,
+    SET_TODO_LISTS,
+    SetTodoListsACType,
+    setTodolistStatusAC,
 } from "./todolist-reducer";
 import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
 import {setLoadingAC} from "./app-reducer";
 import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "./auth-reducer";
 
 const UPDATE_TASK = 'UPDATE_TASK'
 const ADD_NEW_TASK = 'ADD-NEW-TASK'
@@ -49,6 +53,8 @@ export const tasksReducer = (state: TodoListDataType = initialState, action: Tas
 
         case ADD_NEW_TODO_LIST:
             return {...state, [action.payload.newTodolist.id]: []}
+        case CLEAN_STATE_AFTER_LOGOUT:
+            return {}
         default:
             return state
     }
@@ -160,6 +166,7 @@ export type TasksActionsType = ReturnType<typeof removeTaskAC>
     | RemoveTodoListACType
     | AddNewTodoListACType
     | SetTodoListsACType
+    | CleanStateAfterLogoutACType
 
 type UpdatedTaskFieldType = {
     title?: string

@@ -7,6 +7,7 @@ import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-err
 
 const TOGGLE_IS_LOGGED_IN = 'auth/TOGGLE_IS_LOGGED_IN'
 const SET_IS_INITIALIZED = 'auth/SET_IS_INITIALIZED'
+export const CLEAN_STATE_AFTER_LOGOUT = 'auth/CLEAN_STATE_AFTER_LOGOUT'
 
 //REDUCER
 const authInitialState = {
@@ -29,6 +30,7 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
 //ACTION_CREATORS
 export const toggleIsLoggedInAC = (status: boolean) => ({type: TOGGLE_IS_LOGGED_IN, payload: {status}} as const)
 export const setIsInitializedAC = (status: boolean) => ({type: SET_IS_INITIALIZED, payload: {status}} as const)
+export const cleanStateAfterLogoutAC = () => ({type: CLEAN_STATE_AFTER_LOGOUT } as const)
 
 //THUNKS
 export const loginTC = (data: FormDataType) => async (dispatch: AppThunkDispatch) => {
@@ -51,6 +53,7 @@ export const logoutTC = () => async (dispatch: AppThunkDispatch) => {
         const response = await authAPI.logout()
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(toggleIsLoggedInAC(false))
+            dispatch(cleanStateAfterLogoutAC())
             dispatch(setLoadingAC('success'))
         } else {
             appErrorServerHandler(response.data, dispatch)
@@ -80,3 +83,4 @@ export type AuthActionsType = ToggleIsLoggedInACType
     | SetIsAuthorizedACType
 export type ToggleIsLoggedInACType = ReturnType<typeof toggleIsLoggedInAC>
 export type SetIsAuthorizedACType = ReturnType<typeof setIsInitializedAC>
+export type CleanStateAfterLogoutACType = ReturnType<typeof cleanStateAfterLogoutAC>
