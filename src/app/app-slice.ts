@@ -1,8 +1,8 @@
-import {toggleIsLoggedInAC} from "features/auth/auth-reducer";
 import {AppDispatch} from "app/store";
 import {authAPI, StatusCodes} from "api/todolist-api";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {authActions} from "features/auth/auth-slice";
 
 const initialState = {
     status: 'idle' as AppStatus,
@@ -32,7 +32,7 @@ export const initializeAppTC = () => async (dispatch: AppDispatch) => {
     try {
         const response = await authAPI.me()
         if (response.data.resultCode === StatusCodes.Ok) {
-            dispatch(toggleIsLoggedInAC(true))
+            dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
         } else {
             appErrorServerHandler(response.data, dispatch)
         }

@@ -11,7 +11,7 @@ import {object, string} from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "app/store";
-import {loginTC} from "features/auth/auth-reducer";
+import {loginTC} from "features/auth/auth-slice";
 
 export type FormDataType = {
     email: string,

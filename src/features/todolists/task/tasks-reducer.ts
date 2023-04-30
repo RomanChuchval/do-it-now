@@ -11,7 +11,7 @@ import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "a
 import {Dispatch} from "redux";
 import {AppRootStateType} from "app/store";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-slice";
 import {appActions} from "app/app-slice";
 
 const UPDATE_TASK = 'UPDATE_TASK'

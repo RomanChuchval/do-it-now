@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useAppDispatch, useAppSelector} from "app/store";
-import {logoutTC} from "features/auth/auth-reducer";
+import {logoutTC} from "features/auth/auth-slice";
 
 
 export default function ButtonAppBar() {

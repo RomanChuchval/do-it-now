@@ -2,7 +2,7 @@ import {StatusCodes, todolistAPI, TodolistType} from "api/todolist-api";
 import {Dispatch} from "redux";
 import {appActions, AppStatus} from "app/app-slice";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-slice";
 import {fetchTasksTC} from "features/todolists/task/tasks-reducer";
 import {AppDispatch} from "app/store";
 
