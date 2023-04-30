@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import s from './App.module.css';
 import ButtonAppBar from "../common/components/app-bar/Appbar";
 import LinearProgress from "@mui/material/LinearProgress";
-import {AppStatus, initializeAppTC} from "app/app-slice";
+import {initializeAppTC} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
 import {TodolistsList} from "features/todolists/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";
@@ -10,12 +10,13 @@ import {Login} from "features/auth/Login";
 import {CircularProgress} from "@mui/material";
 import {useAppSelector} from "app/hooks/use-AppSelector";
 import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {isInitializedSelector, statusSelector} from "app/app-selectors";
 
 
 const App = () => {
     const dispatch = useAppDispatch()
-    const appStatus = useAppSelector<AppStatus>(state => state.app.status)
-    const isInitialized = useAppSelector<boolean>(state => state.app.initialized)
+    const appStatus = useAppSelector(statusSelector)
+    const isInitialized = useAppSelector(isInitializedSelector)
 
     useEffect(() => {
         dispatch(initializeAppTC())

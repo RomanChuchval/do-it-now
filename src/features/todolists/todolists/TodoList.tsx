@@ -10,10 +10,12 @@ import {
     removeTodolistTC, todolistActions
 } from "features/todolists/todolists/todolist-slice";
 import {addNewTaskTC} from "features/todolists/task/tasks-slice";
-import {TaskStatuses, TaskType} from "api/todolist-api";
+import {TaskStatuses} from "api/todolist-api";
 import {AppStatus} from "app/app-slice";
 import {useAppDispatch} from "app/hooks/use-AppDispatch";
 import {useAppSelector} from "app/hooks/use-AppSelector";
+import {tasksSelector} from "features/todolists/task/tasks-selector";
+import {AppRootStateType} from "app/store";
 
 export type TodoListPropsType = {
     todoListId: string
@@ -31,7 +33,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     }
 ) => {
 
-    const tasks = useAppSelector<TaskType[]>(state => state.tasks[todoListId])
+    const tasks = useAppSelector((state: AppRootStateType) => tasksSelector(state, todoListId))
     const dispatch = useAppDispatch()
 
     // filter tasks for map

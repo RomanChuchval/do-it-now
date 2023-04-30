@@ -9,11 +9,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {logoutTC} from "features/auth/auth-slice";
 import { useAppDispatch } from 'app/hooks/use-AppDispatch';
 import {useAppSelector} from "app/hooks/use-AppSelector";
+import {isLoggedInSelector} from "features/auth/auth-selectors";
 
 
 export default function ButtonAppBar() {
 
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(isLoggedInSelector)
     const dispatch = useAppDispatch()
 
     const onLogoutHandler = () => {
