@@ -10,9 +10,9 @@ import {
 import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "app/store";
-import {setLoadingAC} from "app/app-reducer";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
+import {appActions} from "app/app-slice";
 
 const UPDATE_TASK = 'UPDATE_TASK'
 const ADD_NEW_TASK = 'ADD-NEW-TASK'
@@ -74,11 +74,11 @@ export const removeTaskAC = (todoListID: string, taskID: string) => (
 // Thunks
 export const addNewTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setLoadingAC('loading'))
+        dispatch(appActions.setStatus({status: 'loading'}))
         const response = await todolistAPI.createTask(todolistId, title)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(addNewTaskAC(todolistId, response.data.data.item))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         } else {
             if (response.data.resultCode === StatusCodes.Error) {
                 appErrorServerHandler(response.data, dispatch)
@@ -90,12 +90,12 @@ export const addNewTaskTC = (todolistId: string, title: string) => async (dispat
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setLoadingAC('loading'))
+        dispatch(appActions.setStatus({status: 'loading'}))
         dispatch(setTodolistStatusAC('loading',todolistId ))
         const response = await todolistAPI.removeTask(todolistId, taskId)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(removeTaskAC(todolistId, taskId))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         } else {
             if (response.data.resultCode === StatusCodes.Error) {
                 appErrorServerHandler(response.data, dispatch)
@@ -108,12 +108,12 @@ export const removeTaskTC = (todolistId: string, taskId: string) => async (dispa
     }
 }
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
-    dispatch(setLoadingAC('loading'))
+    dispatch(appActions.setStatus({status: 'loading'}))
     try {
         const response = await todolistAPI.getTasks(todolistId)
         if (response.status === 200) {
             dispatch(setTasksAC(response.data.items, todolistId))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         }
     } catch (e) {
         appErrorNetworkHandler(e, dispatch)
@@ -138,12 +138,12 @@ export const updateTaskTC = (updatedTaskField: UpdatedTaskFieldType, taskId: str
             ...updatedTaskField,
         }
         try {
-            dispatch(setLoadingAC('loading'))
+            dispatch(appActions.setStatus({status: 'loading'}))
             dispatch(setTodolistStatusAC('loading',todolistId ))
             const response = await todolistAPI.updateTask(updatedTask, todolistId, taskId)
             if (response.data.resultCode === StatusCodes.Ok) {
                 dispatch(updateTaskAC(todolistId, taskId, response.data.data.item))
-                dispatch(setLoadingAC('success'))
+                dispatch(appActions.setStatus({status: 'success'}))
             } else {
                 if (response.data.resultCode === StatusCodes.Error) {
                     appErrorServerHandler(response.data, dispatch)

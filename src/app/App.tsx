@@ -3,7 +3,7 @@ import s from './App.module.css';
 import ButtonAppBar from "../common/components/app-bar/Appbar";
 import {useAppDispatch, useAppSelector} from "app/store";
 import LinearProgress from "@mui/material/LinearProgress";
-import {AppStatus, initializeAppTC} from "app/app-reducer";
+import {AppStatus, initializeAppTC} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
 import {TodolistsList} from "features/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";

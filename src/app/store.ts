@@ -1,14 +1,14 @@
 import {todolistReducer, TodolistsActionsType} from "features/todolists/todolist/todolist-reducer";
 import {TasksActionsType, tasksReducer} from "features/todolists/task/tasks-reducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {AppActionsType, appReducer} from "app/app-reducer";
+import { appSlice} from "app/app-slice";
 import {AuthActionsType, authReducer} from "features/auth/auth-reducer";
 import {combineReducers, configureStore, ThunkDispatch} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
     todoLists: todolistReducer,
     tasks: tasksReducer,
-    app: appReducer,
+    app: appSlice,
     auth: authReducer
 })
 
@@ -20,7 +20,7 @@ export const store = configureStore({
 export type AppRootStateType = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch;
 
-type AppActionsTypes = TodolistsActionsType | AppActionsType | TasksActionsType | AuthActionsType
+type AppActionsTypes = TodolistsActionsType | TasksActionsType | AuthActionsType
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AppActionsTypes>
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();

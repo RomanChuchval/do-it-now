@@ -6,7 +6,7 @@ import Checkbox from "@mui/material/Checkbox";
 import {removeTaskTC, updateTaskTC} from "features/todolists/task/tasks-reducer";
 import {TaskStatuses, TaskType} from "api/todolist-api";
 import {useAppDispatch} from "app/store";
-import {AppStatus} from "app/app-reducer";
+import {AppStatus} from "app/app-slice";
 
 type TaskPropsType = {
     todoListId: string

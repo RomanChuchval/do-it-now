@@ -1,10 +1,10 @@
 import {StatusCodes, todolistAPI, TodolistType} from "api/todolist-api";
 import {Dispatch} from "redux";
-import {AppStatus, setLoadingAC} from "app/app-reducer";
+import {appActions, AppStatus} from "app/app-slice";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
 import {fetchTasksTC} from "features/todolists/task/tasks-reducer";
-import {AppThunkDispatch} from "app/store";
+import {AppDispatch} from "app/store";
 
 export const REMOVE_TODO_LIST = 'REMOVE-TODO-LIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
@@ -62,12 +62,12 @@ export const setTodolistsAC = (data: TodolistType[]) => (
 //Thunks
 export const changeTodolistTitleTC = (todolistId: string, newTitle: string) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setLoadingAC('loading'))
+        dispatch(appActions.setStatus({status: 'loading'}))
         dispatch(setTodolistStatusAC('loading', todolistId))
         const response = await todolistAPI.updateTodolistTitle(newTitle, todolistId)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(changeTodoListTitleAC(todolistId, newTitle))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         } else {
             if (response.data.resultCode === StatusCodes.Error) {
                 appErrorServerHandler(response.data, dispatch)
@@ -81,12 +81,12 @@ export const changeTodolistTitleTC = (todolistId: string, newTitle: string) => a
 }
 export const removeTodolistTC = (todolistId: string) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setLoadingAC('loading'))
+        dispatch(appActions.setStatus({status: 'loading'}))
         dispatch(setTodolistStatusAC('loading', todolistId))
         const response = await todolistAPI.deleteTodolist(todolistId)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(removeTodoListAC(todolistId))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         } else {
             if (response.data.resultCode === StatusCodes.Error) {
                 appErrorServerHandler(response.data, dispatch)
@@ -101,11 +101,11 @@ export const removeTodolistTC = (todolistId: string) => async (dispatch: Dispatc
 }
 export const createTodolistTC = (title: string) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setLoadingAC('loading'))
+        dispatch(appActions.setStatus({status: 'loading'}))
         const response = await todolistAPI.createTodolist(title)
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(addNewTodoListAC(response.data.data.item))
-            dispatch(setLoadingAC('success'))
+            dispatch(appActions.setStatus({status: 'success'}))
         } else {
             if (response.data.resultCode === StatusCodes.Error) {
                 appErrorServerHandler(response.data, dispatch)
@@ -115,8 +115,8 @@ export const createTodolistTC = (title: string) => async (dispatch: Dispatch) =>
         appErrorNetworkHandler(e, dispatch)
     }
 }
-export const fetchTodolistsTC = () => async (dispatch: AppThunkDispatch) => {
-    dispatch(setLoadingAC('loading'))
+export const fetchTodolistsTC = () => async (dispatch: AppDispatch) => {
+    dispatch(appActions.setStatus({status: 'loading'}))
     try {
         const response = await todolistAPI.getTodolists()
         dispatch(setTodolistsAC(response.data))

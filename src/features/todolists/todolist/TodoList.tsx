@@ -13,7 +13,7 @@ import {
 } from "features/todolists/todolist/todolist-reducer";
 import {addNewTaskTC} from "features/todolists/task/tasks-reducer";
 import {TaskStatuses, TaskType} from "api/todolist-api";
-import {AppStatus} from "app/app-reducer";
+import {AppStatus} from "app/app-slice";
 
 export type TodoListPropsType = {
     todoListId: string
