@@ -3,17 +3,16 @@ import {TasksActionsType, tasksReducer} from "features/todolists/task/tasks-redu
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import { appSlice} from "app/app-slice";
 import { authSlice} from "features/auth/auth-slice";
-import {combineReducers, configureStore, ThunkDispatch} from "@reduxjs/toolkit";
+import { configureStore, ThunkDispatch} from "@reduxjs/toolkit";
 
-const rootReducer = combineReducers({
-    todoLists: todolistReducer,
-    tasks: tasksReducer,
-    app: appSlice,
-    auth: authSlice
-})
 
 export const store = configureStore({
-    reducer: rootReducer
+    reducer: {
+        todoLists: todolistReducer,
+        tasks: tasksReducer,
+        app: appSlice,
+        auth: authSlice
+    }
 })
 
 
