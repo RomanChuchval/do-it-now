@@ -1,10 +1,10 @@
-import {StatusCodes, todolistAPI, TodolistType} from "../../api/todolist-api";
+import {StatusCodes, todolistAPI, TodolistType} from "api/todolist-api";
 import {Dispatch} from "redux";
-import {AppStatus, setLoadingAC} from "./app-reducer";
-import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
-import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "./auth-reducer";
-import {fetchTasksTC} from "./tasks-reducer";
-import {AppThunkDispatch} from "../store";
+import {AppStatus, setLoadingAC} from "app/app-reducer";
+import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
+import {fetchTasksTC} from "features/todolists/task/tasks-reducer";
+import {AppThunkDispatch} from "app/store";
 
 export const REMOVE_TODO_LIST = 'REMOVE-TODO-LIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'

@@ -1,9 +1,9 @@
 import React from 'react';
-import s from "./SuperButton.module.css";
+import s from "common/components/super-button/SuperButton.module.css";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import {FilterValuesType} from "../../redux/reducers/todolist-reducer";
+import {FilterValuesType} from "features/todolists/todolist/todolist-reducer";
 
 
 type SuperButtonPropsType = {

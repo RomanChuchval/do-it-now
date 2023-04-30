@@ -6,13 +6,13 @@ import {
     SET_TODO_LISTS,
     SetTodoListsACType,
     setTodolistStatusAC,
-} from "./todolist-reducer";
-import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
+} from "features/todolists/todolist/todolist-reducer";
+import {StatusCodes, TaskModelType, TaskStatuses, TaskType, todolistAPI} from "api/todolist-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store";
-import {setLoadingAC} from "./app-reducer";
-import {appErrorNetworkHandler, appErrorServerHandler} from "../../utils/app-error-handlers";
-import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "./auth-reducer";
+import {AppRootStateType} from "app/store";
+import {setLoadingAC} from "app/app-reducer";
+import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
+import {CLEAN_STATE_AFTER_LOGOUT, CleanStateAfterLogoutACType} from "features/auth/auth-reducer";
 
 const UPDATE_TASK = 'UPDATE_TASK'
 const ADD_NEW_TASK = 'ADD-NEW-TASK'
@@ -47,10 +47,11 @@ export const tasksReducer = (state: TodoListDataType = initialState, action: Tas
                 ...state, [action.payload.todoListID]:
                     [action.payload.newTaskData, ...state[action.payload.todoListID]]
             }
-        case REMOVE_TODO_LIST:
-            delete (state[action.payload.todoListID])
-            return state
-
+        case REMOVE_TODO_LIST: {
+            const stateCopy = {...state}
+            delete (stateCopy[action.payload.todoListID])
+            return stateCopy
+        }
         case ADD_NEW_TODO_LIST:
             return {...state, [action.payload.newTodolist.id]: []}
         case CLEAN_STATE_AFTER_LOGOUT:

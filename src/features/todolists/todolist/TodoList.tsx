@@ -1,19 +1,19 @@
 import React, {useCallback} from 'react';
-import s from './TodoList.module.css'
-import {SuperButton} from "../super-button/SuperButton";
-import {InputBlock} from "../input-block/InputBlock";
-import {EditableSpan} from "../editable-span/EditableSpan";
-import Task from "./Task";
-import {useAppDispatch, useAppSelector} from "../../redux/store";
+import s from 'features/todolists/todolist/TodoList.module.css'
+import {SuperButton} from "common/components/super-button/SuperButton";
+import {InputBlock} from 'common/components/input-block/InputBlock';
+import {EditableSpan} from "common/components/editable-span/EditableSpan";
+import Task from "features/todolists/task/Task";
+import {useAppDispatch, useAppSelector} from "app/store";
 import {
     changeFilterAC,
     changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC
-} from "../../redux/reducers/todolist-reducer";
-import {addNewTaskTC} from "../../redux/reducers/tasks-reducer";
-import {TaskStatuses, TaskType} from "../../api/todolist-api";
-import {AppStatus} from "../../redux/reducers/app-reducer";
+} from "features/todolists/todolist/todolist-reducer";
+import {addNewTaskTC} from "features/todolists/task/tasks-reducer";
+import {TaskStatuses, TaskType} from "api/todolist-api";
+import {AppStatus} from "app/app-reducer";
 
 export type TodoListPropsType = {
     todoListId: string

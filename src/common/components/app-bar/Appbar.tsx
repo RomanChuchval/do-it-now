@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {logoutTC} from "../../redux/reducers/auth-reducer";
+import {useAppDispatch, useAppSelector} from "app/store";
+import {logoutTC} from "features/auth/auth-reducer";
 
 
 export default function ButtonAppBar() {

@@ -10,8 +10,8 @@ import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {object, string} from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Navigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../redux/store";
-import {loginTC} from "../redux/reducers/auth-reducer";
+import {useAppDispatch, useAppSelector} from "app/store";
+import {loginTC} from "features/auth/auth-reducer";
 
 export type FormDataType = {
     email: string,

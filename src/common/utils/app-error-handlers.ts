@@ -1,5 +1,5 @@
-import {setErrorAC, SetErrorACType, setLoadingAC, SetLoadingACType} from "../redux/reducers/app-reducer";
-import {ResponseType} from "../api/todolist-api";
+import {setErrorAC, SetErrorACType, setLoadingAC, SetLoadingACType} from "app/app-reducer";
+import {ResponseType} from "api/todolist-api";
 import {Dispatch} from "redux";
 import {isAxiosError} from "axios";
 
@@ -13,6 +13,7 @@ export const appErrorServerHandler = <D>(responseData: ResponseType<D>, dispatch
 }
 
 export const appErrorNetworkHandler = (e: unknown, dispatch:ErrorUtilsDispatchType) => {
+    debugger
     const error = isAxiosError(e) ? e.message : 'Some Error!'
     dispatch(setErrorAC(error))
     dispatch(setLoadingAC('failed'))

@@ -1,12 +1,12 @@
 import React, {ChangeEvent, useCallback} from 'react';
-import s from "./TodoList.module.css";
-import {SuperButton} from "../super-button/SuperButton";
-import {EditableSpan} from "../editable-span/EditableSpan";
+import s from "features/todolists/todolist/TodoList.module.css";
+import {SuperButton} from "common/components/super-button/SuperButton";
+import {EditableSpan} from "common/components/editable-span/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
-import {removeTaskTC, updateTaskTC} from "../../redux/reducers/tasks-reducer";
-import {TaskStatuses, TaskType} from "../../api/todolist-api";
-import {useAppDispatch} from "../../redux/store";
-import {AppStatus} from "../../redux/reducers/app-reducer";
+import {removeTaskTC, updateTaskTC} from "features/todolists/task/tasks-reducer";
+import {TaskStatuses, TaskType} from "api/todolist-api";
+import {useAppDispatch} from "app/store";
+import {AppStatus} from "app/app-reducer";
 
 type TaskPropsType = {
     todoListId: string

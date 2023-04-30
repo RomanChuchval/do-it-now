@@ -1,21 +1,20 @@
 import React, {useEffect} from 'react';
 import s from './App.module.css';
-import ButtonAppBar from "./app-bar/Appbar";
-import {useAppDispatch, useAppSelector} from "../redux/store";
+import ButtonAppBar from "../common/components/app-bar/Appbar";
+import {useAppDispatch, useAppSelector} from "app/store";
 import LinearProgress from "@mui/material/LinearProgress";
-import {AppStatus} from "../redux/reducers/app-reducer";
-import {ErrorSnackbar} from "../components/snackbar/ErrorSnackbar";
-import {TodolistsList} from "../components/todolist/TodolistsList";
+import {AppStatus, initializeAppTC} from "app/app-reducer";
+import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
+import {TodolistsList} from "features/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";
-import {Login} from "../components/Login";
-import {initializeAppTC} from "../redux/reducers/auth-reducer";
+import {Login} from "features/auth/Login";
 import {CircularProgress} from "@mui/material";
 
 
 const App = () => {
     const dispatch = useAppDispatch()
     const appStatus = useAppSelector<AppStatus>(state => state.app.status)
-    const isInitialized = useAppSelector<boolean>(state => state.auth.initialized)
+    const isInitialized = useAppSelector<boolean>(state => state.app.initialized)
 
     useEffect(() => {
         dispatch(initializeAppTC())

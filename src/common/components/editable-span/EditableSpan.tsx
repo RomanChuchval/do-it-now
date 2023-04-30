@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
-import s from './EditableSpan.module.css'
+import s from 'common/components/editable-span/EditableSpan.module.css'
 import TextField from '@mui/material/TextField';
 
 type EditableSpanType = {

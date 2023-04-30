@@ -4,8 +4,8 @@ import {
     changeTodoListTitleAC, FilterValuesType,
     removeTodoListAC, TodolistDomainType,
     todolistReducer
-} from "./todolist-reducer";
-import {TodolistType} from "../../api/todolist-api";
+} from "features/todolists/todolist/todolist-reducer";
+import {TodolistType} from "api/todolist-api";
 
 let todoListId1: string
 let todoListId2: string

@@ -1,6 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
-import s from "./InputBlock.module.css";
-import {SuperButton} from "../super-button/SuperButton";
+import s from "common/components/input-block/InputBlock.module.css";
+import {SuperButton} from "common/components/super-button/SuperButton";
 import TextField from '@mui/material/TextField';
 
 type InputBlockPropsType = {

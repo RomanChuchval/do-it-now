@@ -3,9 +3,9 @@ import {
     updateTaskAC,
     removeTaskAC, TodoListDataType,
     tasksReducer,
-} from "./tasks-reducer";
-import {addNewTodoListAC, removeTodoListAC} from "./todolist-reducer";
-import {TaskStatuses, TaskType, TodolistType} from "../../api/todolist-api";
+} from "features/todolists/task/tasks-reducer";
+import {addNewTodoListAC, removeTodoListAC} from "features/todolists/todolist/todolist-reducer";
+import {TaskStatuses, TaskType, TodolistType} from "api/todolist-api";
 
 let todoListId1: string
 let todoListId2: string

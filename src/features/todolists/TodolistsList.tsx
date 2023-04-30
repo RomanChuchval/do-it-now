@@ -1,9 +1,9 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import s from "../../app/App.module.css";
-import {TodoList} from "./TodoList";
-import {useAppDispatch, useAppSelector} from "../../redux/store";
-import {createTodolistTC, fetchTodolistsTC, TodolistDomainType} from "../../redux/reducers/todolist-reducer";
-import {InputBlock} from "../input-block/InputBlock";
+import s from "app/App.module.css";
+import {TodoList} from "features/todolists/todolist/TodoList";
+import {useAppDispatch, useAppSelector} from "app/store";
+import {createTodolistTC, fetchTodolistsTC, TodolistDomainType} from "features/todolists/todolist/todolist-reducer";
+import {InputBlock} from "common/components/input-block/InputBlock";
 import {Navigate} from "react-router-dom";
 
 export const TodolistsList = memo(() => {
