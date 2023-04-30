@@ -1,10 +1,11 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import s from "app/App.module.css";
-import {TodoList} from "features/todolists/todolist/TodoList";
-import {useAppDispatch, useAppSelector} from "app/store";
-import {createTodolistTC, fetchTodolistsTC, TodolistDomainType} from "features/todolists/todolist/todolist-reducer";
+import {TodoList} from "features/todolists/todolists/TodoList";
+import {createTodolistTC, fetchTodolistsTC, TodolistDomainType} from "features/todolists/todolists/todolist-slice";
 import {InputBlock} from "common/components/input-block/InputBlock";
 import {Navigate} from "react-router-dom";
+import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {useAppSelector} from "app/hooks/use-AppSelector";
 
 export const TodolistsList = memo(() => {
 
@@ -37,7 +38,6 @@ export const TodolistsList = memo(() => {
     if(!isLoggedIn) {
         return <Navigate to={'/login'} />
     }
-
     return (
         <>
             <div className={s.add_todoList_block}>

@@ -5,10 +5,10 @@ import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-er
 import {AppDispatch} from "app/store";
 import {appActions} from "app/app-slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {todolistActions} from "features/todolists/todolists/todolist-slice";
+import {tasksActions} from "features/todolists/task/tasks-slice";
 
-export const CLEAN_STATE_AFTER_LOGOUT = 'auth/CLEAN_STATE_AFTER_LOGOUT'
-
-//REDUCER
+//SLICE
 const authInitialState = {
     isLoggedIn: false
 }
@@ -24,9 +24,6 @@ const slice = createSlice({
 
 export const authSlice = slice.reducer
 export const authActions = slice.actions
-
-//ACTION_CREATORS
-export const cleanStateAfterLogoutAC = () => ({type: CLEAN_STATE_AFTER_LOGOUT } as const)
 
 //THUNKS
 export const loginTC = (data: FormDataType) => async (dispatch: AppDispatch) => {
@@ -49,7 +46,8 @@ export const logoutTC = () => async (dispatch: AppDispatch) => {
         const response = await authAPI.logout()
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
-            dispatch(cleanStateAfterLogoutAC())
+            dispatch(todolistActions.cleanStateAfterLogout())
+            dispatch(tasksActions.cleanStateAfterLogout())
             dispatch(appActions.setStatus({status: 'success'}))
         } else {
             appErrorServerHandler(response.data, dispatch)
@@ -58,6 +56,3 @@ export const logoutTC = () => async (dispatch: AppDispatch) => {
         appErrorNetworkHandler(e, dispatch)
     }
 }
-
-//TYPES
-export type CleanStateAfterLogoutACType = ReturnType<typeof cleanStateAfterLogoutAC>

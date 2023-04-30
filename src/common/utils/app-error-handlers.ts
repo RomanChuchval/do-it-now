@@ -13,10 +13,7 @@ export const appErrorServerHandler = <D>(responseData: ResponseType<D>, dispatch
 }
 
 export const appErrorNetworkHandler = (e: unknown, dispatch: Dispatch) => {
-    debugger
     const error = isAxiosError(e) ? e.message : 'Some Error!'
     dispatch(appActions.setError({error}))
     dispatch(appActions.setStatus({status: 'failed'}))
 }
-
-// type ErrorUtilsDispatchType = Dispatch<SetLoadingACType | SetErrorACType>

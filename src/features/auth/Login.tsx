@@ -10,8 +10,9 @@ import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {object, string} from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Navigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "app/store";
 import {loginTC} from "features/auth/auth-slice";
+import {useAppSelector} from "app/hooks/use-AppSelector";
+import {useAppDispatch} from "app/hooks/use-AppDispatch";
 
 export type FormDataType = {
     email: string,

@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import s from './App.module.css';
 import ButtonAppBar from "../common/components/app-bar/Appbar";
-import {useAppDispatch, useAppSelector} from "app/store";
 import LinearProgress from "@mui/material/LinearProgress";
 import {AppStatus, initializeAppTC} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
-import {TodolistsList} from "features/todolists/TodolistsList";
+import {TodolistsList} from "features/todolists/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "features/auth/Login";
 import {CircularProgress} from "@mui/material";
+import {useAppSelector} from "app/hooks/use-AppSelector";
+import {useAppDispatch} from "app/hooks/use-AppDispatch";
 
 
 const App = () => {

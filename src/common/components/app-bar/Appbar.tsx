@@ -6,8 +6,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useAppDispatch, useAppSelector} from "app/store";
 import {logoutTC} from "features/auth/auth-slice";
+import { useAppDispatch } from 'app/hooks/use-AppDispatch';
+import {useAppSelector} from "app/hooks/use-AppSelector";
 
 
 export default function ButtonAppBar() {

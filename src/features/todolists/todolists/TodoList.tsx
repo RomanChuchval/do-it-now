@@ -1,19 +1,19 @@
 import React, {useCallback} from 'react';
-import s from 'features/todolists/todolist/TodoList.module.css'
+import s from 'features/todolists/todolists/TodoList.module.css'
 import {SuperButton} from "common/components/super-button/SuperButton";
 import {InputBlock} from 'common/components/input-block/InputBlock';
 import {EditableSpan} from "common/components/editable-span/EditableSpan";
 import Task from "features/todolists/task/Task";
-import {useAppDispatch, useAppSelector} from "app/store";
 import {
-    changeFilterAC,
     changeTodolistTitleTC,
     FilterValuesType,
-    removeTodolistTC
-} from "features/todolists/todolist/todolist-reducer";
-import {addNewTaskTC} from "features/todolists/task/tasks-reducer";
+    removeTodolistTC, todolistActions
+} from "features/todolists/todolists/todolist-slice";
+import {addNewTaskTC} from "features/todolists/task/tasks-slice";
 import {TaskStatuses, TaskType} from "api/todolist-api";
 import {AppStatus} from "app/app-slice";
+import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {useAppSelector} from "app/hooks/use-AppSelector";
 
 export type TodoListPropsType = {
     todoListId: string
@@ -35,13 +35,13 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     const dispatch = useAppDispatch()
 
     // filter tasks for map
-    const filteredTodoList = () => {
+    const filteredTasks = () => {
         return filter === 'completed' ? tasks.filter(el => el.status === TaskStatuses.Completed)
             : filter === 'active' ? tasks.filter(el => el.status === TaskStatuses.inProgress)
                 : tasks
     }
 
-    let tasksList = filteredTodoList().map(task => {
+    let tasksList = filteredTasks().map(task => {
         return <Task key={task.id}
                      todoListId={todoListId}
                      task={task}
@@ -50,15 +50,15 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
     })
 
     const changeFilterAllHandler = useCallback(() => {
-        dispatch(changeFilterAC(todoListId, 'all'))
+        dispatch(todolistActions.changeFilter({todoListId, filter: 'all'}))
     }, [dispatch, todoListId])
 
     const changeFilterActiveHandler = useCallback(() => {
-        dispatch(changeFilterAC(todoListId, 'active'))
+        dispatch(todolistActions.changeFilter({todoListId, filter: 'active'}))
     }, [dispatch, todoListId])
 
     const changeFilterCompletedHandler = useCallback(() => {
-        dispatch(changeFilterAC(todoListId, 'completed'))
+        dispatch(todolistActions.changeFilter({todoListId, filter: 'completed'}))
     }, [dispatch, todoListId])
 
     const removeTodoListHandler = useCallback(() => {
