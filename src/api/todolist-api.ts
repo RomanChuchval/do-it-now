@@ -15,27 +15,28 @@ export const todolistAPI = {
     getTodolists() {
          return instance.get<TodolistType[]>('todo-lists')
     },
-    createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistType}>, AxiosResponse<ResponseType<{item: TodolistType}>>>('todo-lists', {title})
+    createTodolist(data: CreateTodolistRequest) {
+        return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title: data.title})
     },
-    deleteTodolist(id: string){
-        return instance.delete<ResponseType>(`todo-lists/${id}`)
+    deleteTodolist(data: RemoveTodolistRequest){
+        return instance.delete<ResponseType>(`todo-lists/${data.todoListId}`)
     },
-    updateTodolistTitle(title: string, id: string){
-        return instance.put<ResponseType, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title})
+    updateTodolistTitle(data: CommonRequestData){
+        return instance.put<ResponseType>(`todo-lists/${data.todoListId}`, {title: data.title})
     },
     //Requests for Tasks
-    getTasks(id: string){
-        return instance.get<ResponseTasksType>(`todo-lists/${id}/tasks`)
+    fetchTasks(data: FetchTasksRequest){
+        return instance.get<ResponseTasksType>(`todo-lists/${data.todoListId}/tasks`)
     },
-    createTask(id: string, title: string) {
-        return instance.post<ResponseType<{item: TaskType}>, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${id}/tasks`, {title})
+    createTask(data: CommonRequestData) {
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${data.todoListId}/tasks`, {title: data.title})
     },
-    removeTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    removeTask(data: RemoveTaskRequest) {
+        return instance.delete<ResponseType>(`todo-lists/${data.todolistId}/tasks/${data.taskId}`)
     },
-    updateTask(updatedTaskModel: TaskModelType, todolistId: string, taskId: string){
-        return instance.put<ResponseType<{item: TaskType}>, AxiosResponse<ResponseType<{item: TaskType}>>>(`todo-lists/${todolistId}/tasks/${taskId}`, updatedTaskModel)
+    updateTask(data: UpdateTaskRequest){
+        return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${data.todolistId}/tasks/${data.taskId}`,
+            data.updatedTaskModel)
     }
 }
 
@@ -50,7 +51,19 @@ export const authAPI = {
         return instance.get<ResponseType<AuthMeDataType>>('auth/me')
     }
 }
-
+export type CommonRequestData = {
+    title: string
+    todoListId: string
+}
+export type RemoveTodolistRequest = Omit<CommonRequestData, 'title'>
+export type FetchTasksRequest = Omit<CommonRequestData, 'title'>
+export type CreateTodolistRequest = Omit<CommonRequestData, 'todoListId'>
+export type RemoveTaskRequest = {todolistId: string, taskId: string}
+export type UpdateTaskRequest = {
+    updatedTaskModel: TaskModelType,
+    todolistId: string,
+    taskId: string
+}
 export type TodolistType = {
     id: string
     title: string
@@ -102,7 +115,6 @@ export enum TaskStatuses {
     inProgress = 1,
     Completed = 3,
 }
-
 export enum StatusCodes {
     Ok = 0,
     Error = 1

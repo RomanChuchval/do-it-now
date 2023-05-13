@@ -1,23 +1,23 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import s from "app/App.module.css";
-import {TodoList} from "features/todolists/todolists/TodoList";
-import {createTodolistTC, fetchTodolistsTC} from "features/todolists/todolists/todolist-slice";
+import {TodoList} from "features/todolists/TodoList";
+import {todolistsThunks} from "features/todolists/todolists-slice";
 import {InputBlock} from "common/components/input-block/InputBlock";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch} from "app/hooks/use-AppDispatch";
 import {useAppSelector} from "app/hooks/use-AppSelector";
-import {todolistSelector} from "features/todolists/todolists/todolist-selectors";
+import {todolistsSelector} from "features/todolists/todolist-selectors";
 import {isLoggedInSelector} from "features/auth/auth-selectors";
 
 export const TodolistsList = memo(() => {
 
     const dispatch = useAppDispatch()
-    const todoLists = useAppSelector(todolistSelector)
+    const todoLists = useAppSelector(todolistsSelector)
     const isLoggedIn = useAppSelector(isLoggedInSelector)
 
     useEffect( ()=>{
         if(isLoggedIn) {
-            dispatch(fetchTodolistsTC())
+            dispatch(todolistsThunks.fetchTodolists())
         }
     }, [dispatch, isLoggedIn] )
 
@@ -34,7 +34,7 @@ export const TodolistsList = memo(() => {
     })
 
     const addNewTodoList = useCallback((title: string) => {
-        dispatch(createTodolistTC(title))
+        dispatch(todolistsThunks.createTodolist({title}))
     }, [dispatch])
 
     if(!isLoggedIn) {

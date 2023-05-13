@@ -4,7 +4,7 @@ import ButtonAppBar from "../common/components/app-bar/Appbar";
 import LinearProgress from "@mui/material/LinearProgress";
 import {initializeAppTC} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
-import {TodolistsList} from "features/todolists/todolists/TodolistsList";
+import {TodolistsList} from "features/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "features/auth/Login";
 import {CircularProgress} from "@mui/material";

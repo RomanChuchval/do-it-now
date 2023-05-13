@@ -1,12 +1,11 @@
-//CONSTANTS
 import {FormDataType} from "features/auth/Login";
 import {authAPI, StatusCodes} from "api/todolist-api";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {AppDispatch} from "app/store";
 import {appActions} from "app/app-slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {todolistActions} from "features/todolists/todolists/todolist-slice";
-import {tasksActions} from "features/todolists/task/tasks-slice";
+import {todolistsActions} from "features/todolists/todolists-slice";
+import {tasksActions} from "features/tasks/tasks-slice";
 
 //SLICE
 const authInitialState = {
@@ -46,7 +45,7 @@ export const logoutTC = () => async (dispatch: AppDispatch) => {
         const response = await authAPI.logout()
         if (response.data.resultCode === StatusCodes.Ok) {
             dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
-            dispatch(todolistActions.cleanStateAfterLogout())
+            dispatch(todolistsActions.cleanStateAfterLogout())
             dispatch(tasksActions.cleanStateAfterLogout())
             dispatch(appActions.setStatus({status: 'success'}))
         } else {
