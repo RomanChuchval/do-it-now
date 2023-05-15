@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const useValidators = () => {
-    const validators = {
+    const validators: ValidatorsType = {
         email: yup
             .string()
             .required('Email is required!')
@@ -12,7 +12,7 @@ export const useValidators = () => {
             .min(4, 'Password must be at least 4 symbols'),
         titleInput: yup
             .string()
-            .required('Title is required!')
+            .required('Field is required')
             .max(20, 'Title must be less then 20 symbols!')
     }
 

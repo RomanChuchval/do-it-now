@@ -26,17 +26,23 @@ export const useAppForm = (validateFields: ValidateFieldType[]) => {
 
     const validateSchema = yup.object(getValidateSchema(validators, validateFields))
 
-    const {handleSubmit, control, reset, formState: { errors }, register } = useForm<AppFormsData>({
-        mode: "onTouched" ,
+    const {handleSubmit, control, reset, formState: { errors }, register, clearErrors } = useForm<AppFormsData>({
+        mode: "onSubmit" ,
         resolver: yupResolver(validateSchema)
     });
+    const clearFieldErrors = (fieldName: ValidateFieldType ) => {
+        setTimeout(() => {
+            clearErrors(fieldName)
+        }, 3000);
+    };
 
     return {
         handleSubmit,
         control,
         reset,
         errors,
-        register
+        register,
+        clearFieldErrors
     }
 }
 
