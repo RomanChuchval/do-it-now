@@ -1,23 +1,15 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import s from 'features/todolists/TodoList.module.css'
 import {SuperButton} from "common/components/super-button/SuperButton";
 import {InputBlock} from 'common/components/input-block/InputBlock';
 import {EditableSpan} from "common/components/editable-span/EditableSpan";
 import Task from "features/tasks/Task";
-import {
-    FilterValuesType,
-    todolistsActions, todolistsThunks,
-} from "features/todolists/todolists-slice";
-import {tasksThunks} from "features/tasks/tasks-slice";
-import {TaskStatuses} from "api/todolist-api";
+import {FilterValuesType} from "features/todolists/todolists-slice";
 import {AppStatus} from "app/app-slice";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
-import {useAppSelector} from "app/hooks/use-AppSelector";
-import {tasksSelector} from "features/tasks/tasks-selector";
-import {AppRootStateType} from "app/store";
+import {useTodolist} from "features/todolists/hooks/useTodolist";
 
 export type TodoListPropsType = {
-    todoListId: string
+    todolistId: string
     title: string
     filter: FilterValuesType
     todolistStatus: AppStatus
@@ -25,58 +17,37 @@ export type TodoListPropsType = {
 
 export const TodoList: React.FC<TodoListPropsType> = React.memo((
     {
-        todoListId,
+        todolistId,
         title,
         filter,
         todolistStatus
     }
 ) => {
+    const {
+        filteredTasks,
+        removeTodolist,
+        toggleFilterToCompleted,
+        toggleFilterToAll,
+        toggleFilterToActive,
+        addTask,
+        changeTodolistTitle
+    } = useTodolist(todolistId, filter)
 
-    const tasks = useAppSelector((state: AppRootStateType) => tasksSelector(state, todoListId))
-    const dispatch = useAppDispatch()
-
-    useEffect( () => {
-        dispatch(tasksThunks.fetchTasks({todoListId}))
-    }, [])
-
-    // filter tasks for map
-    const filteredTasks = () => {
-        return filter === 'completed' ? tasks.filter(el => el.status === TaskStatuses.Completed)
-            : filter === 'active' ? tasks.filter(el => el.status === TaskStatuses.New || el.status === TaskStatuses.inProgress)
-                : tasks
-    }
     let tasksList = filteredTasks().map(task => {
         return <Task key={task.id}
-                     todolistId={todoListId}
+                     todolistId={todolistId}
                      task={task}
                      todolistStatus={todolistStatus}
         />
     })
 
-    const changeFilterAllHandler = useCallback(() => {
-        dispatch(todolistsActions.changeFilter({todoListId, filter: 'all'}))
-    }, [dispatch, todoListId])
-
-    const changeFilterActiveHandler = useCallback(() => {
-        dispatch(todolistsActions.changeFilter({todoListId, filter: 'active'}))
-    }, [dispatch, todoListId])
-
-    const changeFilterCompletedHandler = useCallback(() => {
-        dispatch(todolistsActions.changeFilter({todoListId, filter: 'completed'}))
-    }, [dispatch, todoListId])
-
-    const removeTodoListHandler = useCallback(() => {
-        dispatch(todolistsThunks.removeTodolist({todoListId}))
-    }, [dispatch, todoListId])
-
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(tasksThunks.createTask({todoListId, title}))
-    }, [dispatch, todoListId])
+        addTask(title)
+    }, [addTask])
 
     const changeTodoListTitleHandler = useCallback((title: string) => {
-        dispatch(todolistsThunks.updateTodolistTitle({title, todoListId }))
-    }, [dispatch, todoListId])
-
+        changeTodolistTitle(title)
+    }, [changeTodolistTitle])
 
     return (
         <>
@@ -84,7 +55,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
                 <div>
                     <div className={s.todolist_header_wrapper}>
                         <EditableSpan callback={changeTodoListTitleHandler} title={title}/>
-                        <SuperButton name={'Remove'} btnType={'delete'} callback={removeTodoListHandler}/>
+                        <SuperButton name={'Remove'} btnType={'delete'} callback={removeTodolist}/>
                     </div>
                 </div>
                 <div>
@@ -97,11 +68,11 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
                 </div>
                 <div className={s.filter_button_wrapper}>
                     <SuperButton filter={filter} value={'all'}
-                                 name={'All'} callback={changeFilterAllHandler}/>
+                                 name={'All'} callback={toggleFilterToAll}/>
                     <SuperButton filter={filter} value={'active'}
-                                 name={'Active'} callback={changeFilterActiveHandler}/>
+                                 name={'Active'} callback={toggleFilterToActive}/>
                     <SuperButton filter={filter} value={'completed'}
-                                 name={'Completed'} callback={changeFilterCompletedHandler}/>
+                                 name={'Completed'} callback={toggleFilterToCompleted}/>
                 </div>
             </div>
         </>

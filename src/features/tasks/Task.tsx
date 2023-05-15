@@ -3,10 +3,9 @@ import s from "features/todolists/TodoList.module.css";
 import {SuperButton} from "common/components/super-button/SuperButton";
 import {EditableSpan} from "common/components/editable-span/EditableSpan";
 import Checkbox from "@mui/material/Checkbox";
-import {tasksThunks} from "features/tasks/tasks-slice";
 import {TaskStatuses, TaskType} from "api/todolist-api";
 import {AppStatus} from "app/app-slice";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {useTasks} from "features/tasks/hooks/useTasks";
 
 type TaskPropsType = {
     todolistId: string
@@ -22,20 +21,19 @@ const Task: React.FC<TaskPropsType> = React.memo( (
     }
 ) => {
 
-    const dispatch = useAppDispatch()
+    const {removeTask, changeTaskStatus, changeTaskTitle} = useTasks(task, todolistId)
 
     const removeTaskHandler = useCallback (() => {
-        dispatch(tasksThunks.removeTask({taskId: task.id, todolistId}))
-    }, [dispatch, todolistId, task.id])
+        removeTask()
+    }, [removeTask])
 
     const changeTaskStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
-        const taskStatus = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.inProgress
-        dispatch(tasksThunks.updateTask({taskId: task.id, todolistId, updatedTaskField: {status: taskStatus}}))
-    }, [dispatch, todolistId, task.id])
+        changeTaskStatus(e)
+    }, [changeTaskStatus])
 
     const changeTaskTitleHandler = useCallback ((title: string) => {
-        dispatch(tasksThunks.updateTask({taskId: task.id, todolistId, updatedTaskField: {title}}))
-    } , [dispatch, todolistId, task.id ])
+        changeTaskTitle(title)
+    } , [changeTaskTitle])
 
     return (
         <>

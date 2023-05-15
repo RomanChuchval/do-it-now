@@ -1,9 +1,8 @@
-import {authAPI, StatusCodes} from "api/todolist-api";
+import {authAPI, LoginRequestData, StatusCodes} from "api/todolist-api";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {appThunks} from "app/app-slice";
 import {createSlice, isFulfilled, isPending} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
-import {LoginRequestData} from "features/auth/hooks/useAuthForm";
 
 //SLICE
 const authInitialState = {

@@ -8,12 +8,13 @@ import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
 import {Controller, SubmitHandler} from "react-hook-form";
 import {Navigate} from "react-router-dom";
-import {LoginRequestData, useAuthForm} from "features/auth/hooks/useAuthForm";
+import { useAppForm} from "common/hooks/useAppForm";
 import { useAuth } from './hooks/useAuth';
+import { LoginRequestData } from 'api/todolist-api';
 
 
 export const Login = () => {
-    const {handleSubmit, reset, errors, control} = useAuthForm()
+    const {handleSubmit, reset, errors, control, register} = useAppForm(["email", "password"])
     const {isLoggedIn, login} = useAuth()
     const onSubmit: SubmitHandler<LoginRequestData> = (data) => {
         login(data)
@@ -37,29 +38,22 @@ export const Login = () => {
                     <p>Password: free</p>
                 </FormLabel>
                 <FormGroup>
-                    <Controller
-                        name={'email'}
-                        control={control}
-                        render={ ({field}) =>
-                            <TextField {...field} label="Email"
+                            <TextField {...register('email')}
+                                       label="Email"
                                        margin="normal"
                                        error={!!errors.email}
                                        helperText={errors.email?.message}
                                        size={'small'}
-                            /> }
-                    />
-                   <Controller
-                    name={'password'}
-                    control={control}
-                    render={ ({field}) =>
-                        <TextField {...field} type="password"
+                            />
+
+                        <TextField {...register('password')}
+                                   type="password"
                                    error={!!errors.password}
                                    helperText={errors.password?.message}
                                    label="Password"
                                    margin="normal"
                                    size={'small'}
-                        /> }
-                   />
+                        />
                     <Controller
                         name={'rememberMe'}
                         control={control}

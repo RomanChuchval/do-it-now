@@ -1,36 +1,23 @@
-import React, {ChangeEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import s from 'common/components/editable-span/EditableSpan.module.css'
 import TextField from '@mui/material/TextField';
+import {useEditableSpan} from "common/hooks/useEditableSpan";
 
 type EditableSpanType = {
     title: string
     callback: (title: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanType> = React.memo( (
+export const EditableSpan: React.FC<EditableSpanType> = React.memo((
     {
         title,
         callback,
     }
 ) => {
-
-    const [editMode, setEditMode] = useState<boolean>(false)
-    const [newTitle, setNewTitle] = useState<string>(title)
-    const onEditModeHandler = () => setEditMode(true)
-
-    const offEditModeHandler = useCallback( () => {
-       if  (newTitle.length > 0 ) {
-           callback(newTitle)
-           setEditMode(false)
-       } else {
-           setNewTitle(title)
-           setEditMode(false)
-       }
-    }, [callback, title, newTitle ])
-
-    const onChangeHandler =  useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value)
-    }, [])
+    const {updatedTitle, onEditMode, onChange, editMode, offEditMode} = useEditableSpan(callback, title)
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        onChange(e)
+    }, [onChange])
 
     return (
         <>
@@ -41,11 +28,11 @@ export const EditableSpan: React.FC<EditableSpanType> = React.memo( (
                     label={title}
                     variant="outlined"
                     onChange={onChangeHandler}
-                    onBlur={offEditModeHandler}
-                    value={newTitle}
+                    onBlur={offEditMode}
+                    value={updatedTitle}
                     autoFocus
                 />
-                : <span className={s.todolist_title} onDoubleClick={onEditModeHandler}>{title}</span>}
+                : <span className={s.todolist_title} onDoubleClick={onEditMode}>{title}</span>}
         </>
 
     )

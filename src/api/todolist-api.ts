@@ -1,5 +1,4 @@
 import axios, {AxiosResponse} from "axios";
-import {LoginRequestData} from "features/auth/hooks/useAuthForm";
 
 
 
@@ -20,17 +19,17 @@ export const todolistAPI = {
         return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title: data.title})
     },
     deleteTodolist(data: RemoveTodolistRequest){
-        return instance.delete<ResponseType>(`todo-lists/${data.todoListId}`)
+        return instance.delete<ResponseType>(`todo-lists/${data.todolistId}`)
     },
     updateTodolistTitle(data: CommonRequestData){
-        return instance.put<ResponseType>(`todo-lists/${data.todoListId}`, {title: data.title})
+        return instance.put<ResponseType>(`todo-lists/${data.todolistId}`, {title: data.title})
     },
     //Requests for Tasks
     fetchTasks(data: FetchTasksRequest){
-        return instance.get<ResponseTasksType>(`todo-lists/${data.todoListId}/tasks`)
+        return instance.get<ResponseTasksType>(`todo-lists/${data.todolistId}/tasks`)
     },
     createTask(data: CommonRequestData) {
-        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${data.todoListId}/tasks`, {title: data.title})
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${data.todolistId}/tasks`, {title: data.title})
     },
     removeTask(data: RemoveTaskRequest) {
         return instance.delete<ResponseType>(`todo-lists/${data.todolistId}/tasks/${data.taskId}`)
@@ -54,11 +53,16 @@ export const authAPI = {
 }
 export type CommonRequestData = {
     title: string
-    todoListId: string
+    todolistId: string
+}
+export type LoginRequestData = {
+    email: string
+    password: string
+    rememberMe: boolean
 }
 export type RemoveTodolistRequest = Omit<CommonRequestData, 'title'>
 export type FetchTasksRequest = Omit<CommonRequestData, 'title'>
-export type CreateTodolistRequest = Omit<CommonRequestData, 'todoListId'>
+export type CreateTodolistRequest = Omit<CommonRequestData, 'todolistId'>
 export type RemoveTaskRequest = {todolistId: string, taskId: string}
 export type UpdateTaskRequest = {
     updatedTaskModel: TaskModelType,

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import s from './App.module.css';
-import ButtonAppBar from "../common/components/app-bar/Appbar";
 import LinearProgress from "@mui/material/LinearProgress";
 import {appThunks} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
@@ -11,6 +10,7 @@ import {CircularProgress} from "@mui/material";
 import {useAppSelector} from "app/hooks/use-AppSelector";
 import {useAppDispatch} from "app/hooks/use-AppDispatch";
 import {isInitializedSelector, statusSelector} from "app/app-selectors";
+import {ButtonAppBar} from "common/components/app-bar/Appbar";
 
 
 const App = () => {

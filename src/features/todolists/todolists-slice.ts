@@ -18,8 +18,8 @@ const slice = createSlice({
     name: 'todolist',
     initialState: initialState,
     reducers: {
-        changeFilter: (state, action: PayloadAction<{ todoListId: string, filter: FilterValuesType }>) => {
-            const todolist = state.find(tl => tl.id === action.payload.todoListId)
+        changeFilter: (state, action: PayloadAction<{ todolistId: string, filter: FilterValuesType }>) => {
+            const todolist = state.find(tl => tl.id === action.payload.todolistId)
             if (todolist)
                 todolist.filter = action.payload.filter
         },
@@ -33,12 +33,12 @@ const slice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(updateTodolistTitle.fulfilled, (state, action) => {
-                const todolist = state.find(tl => tl.id === action.payload.todoListId)
+                const todolist = state.find(tl => tl.id === action.payload.todolistId)
                 if (todolist)
                     todolist.title = action.payload.title
             })
             .addCase(removeTodolist.fulfilled, (state, action) => {
-                const todolistIndex = state.findIndex(tl => tl.id === action.payload.todoListId)
+                const todolistIndex = state.findIndex(tl => tl.id === action.payload.todolistId)
                 if (todolistIndex !== -1)
                     state.splice(todolistIndex, 1)
             })
@@ -58,11 +58,11 @@ const slice = createSlice({
 const updateTodolistTitle = createAppAsyncThunk<CommonRequestData, CommonRequestData>(
     'todolists/updateTitle',
     async (data, {rejectWithValue, dispatch}) => {
-        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todoListId}))
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todolistId}))
         try {
             const res = await todolistAPI.updateTodolistTitle(data)
             if (res.data.resultCode === StatusCodes.Ok) {
-                return {title: data.title, todoListId: data.todoListId}
+                return {title: data.title, todolistId: data.todolistId}
             } else {
                 appErrorServerHandler(res.data, dispatch)
                 return rejectWithValue(null)
@@ -71,18 +71,17 @@ const updateTodolistTitle = createAppAsyncThunk<CommonRequestData, CommonRequest
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
         } finally {
-            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todoListId}))
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todolistId}))
         }
     })
-
 const removeTodolist = createAppAsyncThunk<RemoveTodolistRequest, RemoveTodolistRequest>(
     'todolists/remove',
     async (data, {rejectWithValue, dispatch}) => {
-        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todoListId}))
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todolistId}))
         try {
             const res = await todolistAPI.deleteTodolist(data)
             if (res.data.resultCode === StatusCodes.Ok) {
-                return {todoListId: data.todoListId}
+                return {todolistId: data.todolistId}
             } else {
                 appErrorServerHandler(res.data, dispatch)
                 return rejectWithValue(null)
@@ -91,7 +90,7 @@ const removeTodolist = createAppAsyncThunk<RemoveTodolistRequest, RemoveTodolist
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
         } finally {
-            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todoListId}))
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todolistId}))
         }
     })
 

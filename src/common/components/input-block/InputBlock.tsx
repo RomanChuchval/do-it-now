@@ -1,60 +1,41 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
+import React from "react";
 import s from "common/components/input-block/InputBlock.module.css";
 import {SuperButton} from "common/components/super-button/SuperButton";
 import TextField from '@mui/material/TextField';
+import {useAppForm} from "common/hooks/useAppForm";
 
 type InputBlockPropsType = {
     callback: (title: string) => void
 }
-
+type InputFormType = {
+    titleInput: string
+}
 export const InputBlock: React.FC<InputBlockPropsType> = React.memo((
     {
         callback
     }
 ) => {
-    const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<string>('')
-    const addTaskKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        return e.key === 'Enter' ? addItemHandler() : ''
+    const {handleSubmit, errors, reset, register} = useAppForm(['titleInput'])
+    const onSubmitHandler = (data: InputFormType) => {
+        callback(data.titleInput)
+        reset()
     }
-    const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError('')
-        if (title.length < 20) {
-            setTitle(e.currentTarget.value)
-        } else {
-            setError('Max title length 20 letters')
-            setTitle(e.currentTarget.value.slice(0, -1))
-        }
-    }
-
-    const addItemHandler = useCallback (() => {
-        if (title.trim() === '') {
-            setError('Title is required')
-        } else {
-            callback(title)
-            setError('')
-        }
-        setTitle('')
-    }, [callback, title])
-
     return (
         <>
-            <div className={s.input_block_wrapper}>
+            <form onSubmit={handleSubmit(onSubmitHandler)} className={s.input_block_wrapper}>
                 <div>
                     <TextField
+                        {...register('titleInput')}
                         size={"small"}
-                        error={!!error}
+                        error={!!errors.titleInput}
                         id="outlined-error"
-                        label={!!error ? error : 'Add item'}
-                        onKeyDown={addTaskKeyDownHandler}
-                        value={title}
-                        onChange={changeTaskTitleHandler}
+                        label={!!errors.titleInput ? errors.titleInput.message : 'Add item'}
                     />
                 </div>
                 <div>
-                    <SuperButton name={'+'} callback={addItemHandler}/>
+                    <SuperButton name={'+'}/>
                 </div>
-            </div>
+            </form>
         </>
     );
 });

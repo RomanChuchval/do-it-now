@@ -24,7 +24,7 @@ const slice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(todolistsThunks.removeTodolist.fulfilled, (state, action) => {
-                delete state[action.payload.todoListId]
+                delete state[action.payload.todolistId]
             })
             .addCase(todolistsThunks.createTodolist.fulfilled, (state, action) => {
                 state[action.payload.newTodolist.id] = []
@@ -57,11 +57,11 @@ const slice = createSlice({
 const createTask = createAppAsyncThunk<{ todolistId: string, newTaskData: TaskType }, CommonRequestData>(
     'tasks/create',
     async (data, {rejectWithValue, dispatch}) => {
-        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todoListId}))
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todolistId}))
         try {
-            const res = await todolistAPI.createTask({title: data.title, todoListId: data.todoListId})
+            const res = await todolistAPI.createTask({title: data.title, todolistId: data.todolistId})
             if (res.data.resultCode === StatusCodes.Ok) {
-                return {todolistId: data.todoListId, newTaskData: res.data.data.item}
+                return {todolistId: data.todolistId, newTaskData: res.data.data.item}
             } else {
                 appErrorServerHandler(res.data, dispatch)
                 return rejectWithValue(null)
@@ -70,7 +70,7 @@ const createTask = createAppAsyncThunk<{ todolistId: string, newTaskData: TaskTy
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
         } finally {
-            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todoListId}))
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todolistId}))
         }
     })
 
@@ -98,8 +98,8 @@ const fetchTasks = createAppAsyncThunk<{ tasksData: TaskType[], todolistId: stri
     'tasks/fetch',
     async (data, {rejectWithValue, dispatch}) => {
         try {
-            const res = await todolistAPI.fetchTasks({todoListId: data.todoListId})
-            return {tasksData: res.data.items, todolistId: data.todoListId}
+            const res = await todolistAPI.fetchTasks({todolistId: data.todolistId})
+            return {tasksData: res.data.items, todolistId: data.todolistId}
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)

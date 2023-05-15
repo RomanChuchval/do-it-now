@@ -8,7 +8,7 @@ import {FilterValuesType} from "features/todolists/todolists-slice";
 
 type SuperButtonPropsType = {
     name: string
-    callback: () => void
+    callback?: () => void
     value?: FilterValuesType
     filter?: FilterValuesType
     btnType?: string
@@ -36,6 +36,7 @@ export const SuperButton: React.FC<SuperButtonPropsType> = React.memo( (
             : btnType === 'delete'
                 ? <Button onClick={callback} size={'small'} variant="outlined" startIcon={<DeleteIcon/>}/>
                 : <Button
+                    type={'submit'}
                     color={activeButtonColor}
                     className={s.btn}
                     variant="contained"
