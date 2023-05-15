@@ -1,30 +1,23 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {logoutTC} from "features/auth/auth-slice";
-import { useAppDispatch } from 'app/hooks/use-AppDispatch';
-import {useAppSelector} from "app/hooks/use-AppSelector";
-import {isLoggedInSelector} from "features/auth/auth-selectors";
+import {useAuth} from "features/auth/hooks/useAuth";
 
 
 export default function ButtonAppBar() {
-
-    const isLoggedIn = useAppSelector(isLoggedInSelector)
-    const dispatch = useAppDispatch()
-
+    const {isLoggedIn, logout} = useAuth()
     const onLogoutHandler = () => {
-        dispatch(logoutTC())
+        logout()
     }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar sx={{justifyContent: 'space-between'}}>
                     <IconButton
                         size="large"
                         edge="start"
@@ -34,9 +27,6 @@ export default function ButtonAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        React TODO List
-                    </Typography>
                     {isLoggedIn && <Button color="inherit" onClick={onLogoutHandler}>Logout</Button>}
                 </Toolbar>
             </AppBar>

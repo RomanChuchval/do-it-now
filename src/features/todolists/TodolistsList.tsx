@@ -1,13 +1,13 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import s from "app/App.module.css";
 import {TodoList} from "features/todolists/TodoList";
-import {todolistsThunks} from "features/todolists/todolists-slice";
 import {InputBlock} from "common/components/input-block/InputBlock";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch} from "app/hooks/use-AppDispatch";
 import {useAppSelector} from "app/hooks/use-AppSelector";
 import {todolistsSelector} from "features/todolists/todolist-selectors";
 import {isLoggedInSelector} from "features/auth/auth-selectors";
+import {todolistsThunks} from "features/todolists/todolists-slice";
 
 export const TodolistsList = memo(() => {
 

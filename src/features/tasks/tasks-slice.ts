@@ -1,4 +1,3 @@
-import {todolistsThunks} from "features/todolists/todolists-slice";
 import {
     StatusCodes,
     TaskModelType,
@@ -8,9 +7,10 @@ import {
     RemoveTaskRequest, FetchTasksRequest
 } from "api/todolist-api";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {appActions} from "app/app-slice";
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, isFulfilled, isPending} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
+import {todolistsActions, todolistsThunks} from "features/todolists/todolists-slice";
+import {authThunks} from "features/auth/auth-slice";
 
 //Reducer
 const initialState: TodoListDataType = {}
@@ -47,15 +47,18 @@ const slice = createSlice({
                 const taskIndex = state[action.payload.todolistId].findIndex(t => t.id === action.payload.taskId)
                 if (taskIndex !== -1)
                     state[action.payload.todolistId][taskIndex] = action.payload.updatedTask
-        })
+            })
+            .addCase(authThunks.logout.fulfilled, () => {
+                return initialState
+            })
     }
 })
 
 const createTask = createAppAsyncThunk<{ todolistId: string, newTaskData: TaskType }, CommonRequestData>(
     'tasks/create',
     async (data, {rejectWithValue, dispatch}) => {
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todoListId}))
         try {
-            dispatch(appActions.setStatus({status: 'loading'}))
             const res = await todolistAPI.createTask({title: data.title, todoListId: data.todoListId})
             if (res.data.resultCode === StatusCodes.Ok) {
                 return {todolistId: data.todoListId, newTaskData: res.data.data.item}
@@ -66,11 +69,15 @@ const createTask = createAppAsyncThunk<{ todolistId: string, newTaskData: TaskTy
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
+        } finally {
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todoListId}))
         }
     })
+
 const removeTask = createAppAsyncThunk<{ todolistId: string, taskId: string }, RemoveTaskRequest>(
     'tasks/remove',
     async (data, {rejectWithValue, dispatch}) => {
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todolistId}))
         try {
             const response = await todolistAPI.removeTask({taskId: data.taskId, todolistId: data.todolistId})
             if (response.data.resultCode === StatusCodes.Ok) {
@@ -82,21 +89,23 @@ const removeTask = createAppAsyncThunk<{ todolistId: string, taskId: string }, R
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
+        } finally {
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todolistId}))
         }
     })
+
 const fetchTasks = createAppAsyncThunk<{ tasksData: TaskType[], todolistId: string }, FetchTasksRequest>(
     'tasks/fetch',
     async (data, {rejectWithValue, dispatch}) => {
-        dispatch(appActions.setStatus({status: 'loading'}))
         try {
             const res = await todolistAPI.fetchTasks({todoListId: data.todoListId})
-            dispatch(appActions.setStatus({status: 'success'}))
             return {tasksData: res.data.items, todolistId: data.todoListId}
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
         }
     })
+
 const updateTask = createAppAsyncThunk<{ todolistId: string, taskId: string, updatedTask: TaskType },
     { todolistId: string, taskId: string, updatedTaskField: UpdatedTaskFieldType }>(
     'tasks/update',
@@ -115,6 +124,7 @@ const updateTask = createAppAsyncThunk<{ todolistId: string, taskId: string, upd
             deadline: findProcessedTask.deadline,
             ...data.updatedTaskField,
         }
+        dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: data.todolistId}))
         try {
             const res = await todolistAPI
                 .updateTask({updatedTaskModel: updatedTask, taskId: data.taskId, todolistId: data.todolistId})
@@ -127,97 +137,27 @@ const updateTask = createAppAsyncThunk<{ todolistId: string, taskId: string, upd
         } catch (e) {
             appErrorNetworkHandler(e, dispatch)
             return rejectWithValue(null)
+        } finally {
+            dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: data.todolistId}))
         }
     }
 )
 
-export const tasksActions = slice.actions
+export const tasksPending = isPending(
+    fetchTasks,
+    createTask,
+    updateTask,
+    removeTask,
+)
+export const tasksFulfilled = isFulfilled(
+    fetchTasks,
+    createTask,
+    updateTask,
+    removeTask,
+)
+
 export const tasksSlice = slice.reducer
 export const tasksThunks = {createTask, removeTask, fetchTasks, updateTask}
-
-// Thunks
-// export const addNewTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
-//     try {
-//         dispatch(appActions.setStatus({status: 'loading'}))
-//         const response = await todolistAPI.createTask(todolistId, title)
-//         if (response.data.resultCode === StatusCodes.Ok) {
-//             dispatch(tasksActions.addNewTask({todolistId, newTaskData: response.data.data.item}))
-//             dispatch(appActions.setStatus({status: 'success'}))
-//         } else {
-//             if (response.data.resultCode === StatusCodes.Error) {
-//                 appErrorServerHandler(response.data, dispatch)
-//             }
-//         }
-//     } catch (e) {
-//         appErrorNetworkHandler(e, dispatch)
-//     }
-// }
-// export const removeTaskTC = (todolistId: string, taskId: string) => async (dispatch: Dispatch) => {
-//     try {
-//         dispatch(appActions.setStatus({status: 'loading'}))
-//         dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId}))
-//         const response = await todolistAPI.removeTask(todolistId, taskId)
-//         if (response.data.resultCode === StatusCodes.Ok) {
-//             dispatch(tasksActions.removeTask({todolistId, taskId}))
-//             dispatch(appActions.setStatus({status: 'success'}))
-//         } else {
-//             if (response.data.resultCode === StatusCodes.Error) {
-//                 appErrorServerHandler(response.data, dispatch)
-//             }
-//         }
-//     } catch (e) {
-//         appErrorNetworkHandler(e, dispatch)
-//     } finally {
-//         dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId}))
-//     }
-// }
-// export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
-//     dispatch(appActions.setStatus({status: 'loading'}))
-//     try {
-//         const response = await todolistAPI.getTasks(todolistId)
-//         if (response.status === 200) {
-//             dispatch(tasksActions.setTasks({tasksData: response.data.items, todolistId}))
-//             dispatch(appActions.setStatus({status: 'success'}))
-//         }
-//     } catch (e) {
-//         appErrorNetworkHandler(e, dispatch)
-//     }
-// }
-// export const updateTaskTC = (updatedTaskField: UpdatedTaskFieldType, taskId: string, todolistId: string) =>
-//     async (dispatch: Dispatch, getState: () => AppRootStateType) => {
-//         const findProcessedTask = getState().tasks[todolistId].find(task => task.id === taskId)
-//         if (!findProcessedTask) {
-//             console.warn('Task not found!')
-//             return
-//         }
-//         const updatedTask: TaskModelType = {
-//             title: findProcessedTask.title,
-//             description: findProcessedTask.description,
-//             completed: findProcessedTask.completed,
-//             status: findProcessedTask.status,
-//             priority: findProcessedTask.priority,
-//             startDate: findProcessedTask.startDate,
-//             deadline: findProcessedTask.deadline,
-//             ...updatedTaskField,
-//         }
-//         try {
-//             dispatch(appActions.setStatus({status: 'loading'}))
-//             dispatch(todolistsActions.setTodolistStatus({status: 'loading', todolistId: todolistId}))
-//             const response = await todolistAPI.updateTask(updatedTask, todolistId, taskId)
-//             if (response.data.resultCode === StatusCodes.Ok) {
-//                 dispatch(tasksActions.updateTask({todolistId, taskId, updatedTask: response.data.data.item}))
-//                 dispatch(appActions.setStatus({status: 'success'}))
-//             } else {
-//                 if (response.data.resultCode === StatusCodes.Error) {
-//                     appErrorServerHandler(response.data, dispatch)
-//                 }
-//             }
-//         } catch (e) {
-//             appErrorNetworkHandler(e, dispatch)
-//         } finally {
-//             dispatch(todolistsActions.setTodolistStatus({status: 'success', todolistId: todolistId}))
-//         }
-//     }
 
 //Types
 export type TodoListDataType = {

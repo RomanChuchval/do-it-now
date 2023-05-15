@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
-import {FormDataType} from "features/auth/Login";
+import {LoginRequestData} from "features/auth/hooks/useAuthForm";
+
 
 
 const instance = axios.create({
@@ -41,7 +42,7 @@ export const todolistAPI = {
 }
 
 export const authAPI = {
-    login(loginData: FormDataType) {
+    login(loginData: LoginRequestData) {
         return instance.post<ResponseType<{userId: number}>, AxiosResponse<ResponseType<{userId: number}>>>('auth/login', loginData)
     },
     logout(){

@@ -1,11 +1,9 @@
-import {FormDataType} from "features/auth/Login";
 import {authAPI, StatusCodes} from "api/todolist-api";
 import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {AppDispatch} from "app/store";
-import {appActions} from "app/app-slice";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {todolistsActions} from "features/todolists/todolists-slice";
-import {tasksActions} from "features/tasks/tasks-slice";
+import {appThunks} from "app/app-slice";
+import {createSlice, isFulfilled, isPending} from "@reduxjs/toolkit";
+import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
+import {LoginRequestData} from "features/auth/hooks/useAuthForm";
 
 //SLICE
 const authInitialState = {
@@ -14,44 +12,58 @@ const authInitialState = {
 const slice = createSlice({
     name: 'auth',
     initialState: authInitialState,
-    reducers: {
-        setIsLoggedIn: (state, action: PayloadAction<{isLoggedIn: boolean}>) => {
-            state.isLoggedIn = action.payload.isLoggedIn
-        }
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(login.fulfilled, (state) => {
+                state.isLoggedIn = true
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.isLoggedIn = false
+            })
+            .addCase(appThunks.initializeApp.fulfilled, (state) => {
+                state.isLoggedIn = true
+            })
     }
 })
 
-export const authSlice = slice.reducer
-export const authActions = slice.actions
+const login = createAppAsyncThunk<void, LoginRequestData>(
+    'auth/login',
+    async (data, {rejectWithValue, dispatch}) => {
+        try {
+            const res = await authAPI.login(data)
+            if (res.data.resultCode === StatusCodes.Error) {
+                appErrorServerHandler(res.data, dispatch)
+                return rejectWithValue(null)
+            }
+        } catch (e) {
+            appErrorNetworkHandler(e, dispatch)
+            return rejectWithValue(null)
+        }
+    })
+const logout = createAppAsyncThunk<void>(
+    'auth/logout',
+    async (data, {rejectWithValue, dispatch}) => {
+        try {
+            const response = await authAPI.logout()
+            if (response.data.resultCode === StatusCodes.Error) {
+                appErrorServerHandler(response.data, dispatch)
+                return rejectWithValue(null)
+            }
+        } catch (e) {
+            appErrorNetworkHandler(e, dispatch)
+            return rejectWithValue(null)
+        }
+    })
 
-//THUNKS
-export const loginTC = (data: FormDataType) => async (dispatch: AppDispatch) => {
-    dispatch(appActions.setStatus({status: 'loading'}))
-    try {
-        const response = await authAPI.login(data)
-        if (response.data.resultCode === StatusCodes.Ok) {
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
-            dispatch(appActions.setStatus({status: 'success'}))
-        } else {
-            appErrorServerHandler(response.data, dispatch)
-        }
-    } catch (e) {
-        appErrorNetworkHandler(e, dispatch)
-    }
-}
-export const logoutTC = () => async (dispatch: AppDispatch) => {
-    dispatch(appActions.setStatus({status: 'loading'}))
-    try {
-        const response = await authAPI.logout()
-        if (response.data.resultCode === StatusCodes.Ok) {
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
-            dispatch(todolistsActions.cleanStateAfterLogout())
-            dispatch(tasksActions.cleanStateAfterLogout())
-            dispatch(appActions.setStatus({status: 'success'}))
-        } else {
-            appErrorServerHandler(response.data, dispatch)
-        }
-    } catch (e) {
-        appErrorNetworkHandler(e, dispatch)
-    }
-}
+export const authPending = isPending(
+    login,
+    logout
+)
+export const authFulfilled = isFulfilled(
+    login,
+    logout
+)
+
+export const authThunks = {login, logout}
+export const authSlice = slice.reducer

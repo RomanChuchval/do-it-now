@@ -6,51 +6,23 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {object, string} from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
+import {Controller, SubmitHandler} from "react-hook-form";
 import {Navigate} from "react-router-dom";
-import {loginTC} from "features/auth/auth-slice";
-import {useAppSelector} from "app/hooks/use-AppSelector";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {LoginRequestData, useAuthForm} from "features/auth/hooks/useAuthForm";
+import { useAuth } from './hooks/useAuth';
 
-export type FormDataType = {
-    email: string,
-    password: string,
-    rememberMe: boolean
-}
-
-const formSchema = object({
-    email: string()
-        .required('Email is required!')
-        .email('Email not valid'),
-    password: string()
-        .required('Password is required!')
-        .min(4, 'Password must be at least 4 symbols'),
-})
 
 export const Login = () => {
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
-    const dispatch = useAppDispatch()
-
-    const {handleSubmit, control, reset, formState: { errors } } = useForm<FormDataType>({
-        defaultValues: {
-            email: '',
-            password: '',
-            rememberMe: false
-        },
-        mode: "onTouched" ,
-        resolver: yupResolver(formSchema)
-    });
-    const onSubmit: SubmitHandler<FormDataType> = (data) => {
-        dispatch(loginTC(data))
+    const {handleSubmit, reset, errors, control} = useAuthForm()
+    const {isLoggedIn, login} = useAuth()
+    const onSubmit: SubmitHandler<LoginRequestData> = (data) => {
+        login(data)
         reset()
     }
 
     if(isLoggedIn) {
         return <Navigate to={'/'} />
     }
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl sx={{minWidth: '350px'}}>

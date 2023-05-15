@@ -6,7 +6,7 @@ import {EditableSpan} from "common/components/editable-span/EditableSpan";
 import Task from "features/tasks/Task";
 import {
     FilterValuesType,
-    todolistsActions, todolistsThunks
+    todolistsActions, todolistsThunks,
 } from "features/todolists/todolists-slice";
 import {tasksThunks} from "features/tasks/tasks-slice";
 import {TaskStatuses} from "api/todolist-api";

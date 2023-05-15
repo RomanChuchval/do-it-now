@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import s from './App.module.css';
 import ButtonAppBar from "../common/components/app-bar/Appbar";
 import LinearProgress from "@mui/material/LinearProgress";
-import {initializeAppTC} from "app/app-slice";
+import {appThunks} from "app/app-slice";
 import {ErrorSnackbar} from "common/components/snackbar/ErrorSnackbar";
 import {TodolistsList} from "features/todolists/TodolistsList";
 import {Route, Routes} from "react-router-dom";
@@ -19,7 +19,7 @@ const App = () => {
     const isInitialized = useAppSelector(isInitializedSelector)
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(appThunks.initializeApp())
     }, [dispatch])
 
     return (
