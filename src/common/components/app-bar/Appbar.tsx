@@ -9,11 +9,10 @@ import {SuperButton} from "common/components/super-button/SuperButton";
 
 
 export const ButtonAppBar = memo(() => {
-
     const {isLoggedIn, logout} = useAuth()
-    const onLogoutHandler =  useCallback(() => {
+    const onLogoutHandler =  () => {
         logout()
-    }, [logout])
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
