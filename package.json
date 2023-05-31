@@ -2,7 +2,7 @@
   "name": "todoshka",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://RomanChuchval.github.io/My_TODOList",
+  "homepage": "https://RomanChuchval.github.io/do-it-now",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
