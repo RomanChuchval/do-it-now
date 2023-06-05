@@ -1,11 +1,10 @@
-import React, {ChangeEvent, useCallback} from 'react';
-import s from "features/todolists/TodoList.module.css";
-import {SuperButton} from "common/components/super-button/SuperButton";
-import {EditableSpan} from "common/components/editable-span/EditableSpan";
+import React from 'react';
+import s from "features/todolists/ui/TodoList.module.css";
 import Checkbox from "@mui/material/Checkbox";
-import {TaskStatuses, TaskType} from "api/todolist-api";
+import {TaskStatuses, TaskType} from "api";
 import {AppStatus} from "app/app-slice";
 import {useTasks} from "features/tasks/hooks/useTasks";
+import {EditableSpan, SuperButton} from "common/components";
 
 type TaskPropsType = {
     todolistId: string
@@ -13,7 +12,7 @@ type TaskPropsType = {
     todolistStatus: AppStatus
 }
 
-const Task: React.FC<TaskPropsType> = React.memo( (
+export const Task: React.FC<TaskPropsType> = React.memo( (
     {
         todolistId,
         task,
@@ -23,24 +22,12 @@ const Task: React.FC<TaskPropsType> = React.memo( (
 
     const {removeTask, changeTaskStatus, changeTaskTitle} = useTasks(task, todolistId)
 
-    const removeTaskHandler = useCallback (() => {
-        removeTask()
-    }, [removeTask])
-
-    const changeTaskStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(e)
-    }, [changeTaskStatus])
-
-    const changeTaskTitleHandler = useCallback ((title: string) => {
-        changeTaskTitle(title)
-    } , [changeTaskTitle])
-
     return (
         <>
             <li className={s.task_list_item}>
-                <SuperButton name={'x'} btnType={'trash'} callback={removeTaskHandler}/>
-                <EditableSpan title={task.title} callback={changeTaskTitleHandler}/>
-                <Checkbox color="primary" onChange={changeTaskStatusHandler}
+                <SuperButton name={'x'} btnType={'trash'} callback={removeTask}/>
+                <EditableSpan title={task.title} callback={changeTaskTitle}/>
+                <Checkbox color="primary" onChange={changeTaskStatus}
                           checked={task.status === TaskStatuses.Completed}
                           disabled={todolistStatus === 'loading'}
                 />
@@ -48,5 +35,3 @@ const Task: React.FC<TaskPropsType> = React.memo( (
         </>
     );
 });
-
-export default Task;

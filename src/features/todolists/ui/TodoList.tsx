@@ -1,12 +1,10 @@
-import React, {useCallback} from 'react';
-import s from 'features/todolists/TodoList.module.css'
-import {SuperButton} from "common/components/super-button/SuperButton";
-import {InputBlock} from 'common/components/input-block/InputBlock';
-import {EditableSpan} from "common/components/editable-span/EditableSpan";
-import Task from "features/tasks/Task";
+import React from 'react';
+import s from 'features/todolists/ui/TodoList.module.css'
+import {Task} from "features/tasks/Task";
 import {FilterValuesType} from "features/todolists/todolists-slice";
 import {AppStatus} from "app/app-slice";
 import {useTodolist} from "features/todolists/hooks/useTodolist";
+import {EditableSpan, InputBlock, SuperButton} from "common/components";
 
 export type TodoListPropsType = {
     todolistId: string
@@ -41,25 +39,17 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo((
         />
     })
 
-    const addTaskHandler = useCallback((title: string) => {
-        addTask(title)
-    }, [addTask])
-
-    const changeTodoListTitleHandler = useCallback((title: string) => {
-        changeTodolistTitle(title)
-    }, [changeTodolistTitle])
-
     return (
         <>
             <div className={`${s.todolist_wrapper} ${todolistStatus === 'loading' && s.todolist_disable}`}>
                 <div>
                     <div className={s.todolist_header_wrapper}>
-                        <EditableSpan callback={changeTodoListTitleHandler} title={title}/>
+                        <EditableSpan callback={changeTodolistTitle} title={title}/>
                         <SuperButton name={'Remove'} btnType={'delete'} callback={removeTodolist}/>
                     </div>
                 </div>
                 <div>
-                    <InputBlock callback={addTaskHandler}/>
+                    <InputBlock callback={addTask}/>
                 </div>
                 <div className={s.task_list_wrapper}>
                     <ul className={s.tasks_list}>

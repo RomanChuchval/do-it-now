@@ -1,8 +1,8 @@
 import {authAPI, LoginRequestData, StatusCodes} from "api/todolist-api";
-import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
+import {appErrorNetworkHandler, appErrorServerHandler, createAppAsyncThunk} from "common/utils";
 import {appThunks} from "app/app-slice";
-import {createSlice, isFulfilled, isPending} from "@reduxjs/toolkit";
-import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
+import {createSlice} from "@reduxjs/toolkit";
+
 
 //SLICE
 const authInitialState = {
@@ -54,15 +54,6 @@ const logout = createAppAsyncThunk<void>(
             return rejectWithValue(null)
         }
     })
-
-export const authPending = isPending(
-    login,
-    logout
-)
-export const authFulfilled = isFulfilled(
-    login,
-    logout
-)
 
 export const authThunks = {login, logout}
 export const authSlice = slice.reducer

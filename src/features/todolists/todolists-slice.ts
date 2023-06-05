@@ -1,3 +1,7 @@
+import {createSlice, isFulfilled, isPending, PayloadAction} from "@reduxjs/toolkit";
+import {appErrorNetworkHandler, appErrorServerHandler, createAppAsyncThunk} from "common/utils";
+import {AppStatus} from "app/app-slice";
+import {authThunks} from "features/auth/auth-slice";
 import {
     CreateTodolistRequest,
     RemoveTodolistRequest,
@@ -5,12 +9,8 @@ import {
     todolistAPI,
     TodolistType,
     CommonRequestData
-} from "api/todolist-api";
-import {AppStatus} from "app/app-slice";
-import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {createSlice, isFulfilled, isPending, PayloadAction} from "@reduxjs/toolkit";
-import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
-import {authThunks} from "features/auth/auth-slice";
+} from "api";
+
 
 // SLICE
 const initialState: TodolistDomainType[] = []
@@ -27,8 +27,7 @@ const slice = createSlice({
             const todolist = state.find(tl => tl.id === action.payload.todolistId)
             if (todolist)
                 todolist.todolistStatus = action.payload.status
-        },
-        cleanStateAfterLogout: () => initialState
+        }
     },
     extraReducers: builder => {
         builder
@@ -135,9 +134,10 @@ export const todolistsFulfilled = isFulfilled(
     createTodolist,
     updateTodolistTitle,
 )
-export const todolistsActions = slice.actions
+
 export const todolistsSlice = slice.reducer
 export const todolistsThunks = {updateTodolistTitle, removeTodolist, createTodolist, fetchTodolists}
+export const todolistsActions = slice.actions
 
 // TYPES
 export type FilterValuesType = 'all' | 'active' | 'completed'

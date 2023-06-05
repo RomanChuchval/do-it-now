@@ -1,15 +1,12 @@
-import React, {memo, useCallback} from 'react';
+import React from 'react';
 import s from "app/App.module.css";
-import {TodoList} from "features/todolists/TodoList";
-import {InputBlock} from "common/components/input-block/InputBlock";
+import {TodoList} from "features/todolists/ui/TodoList";
 import {useTodolistsList} from "features/todolists/hooks/useTodolistsList";
+import {InputBlock} from "common/components";
 
-export const TodolistsList = memo(() => {
+export const TodolistsList = () => {
+
     const {todoLists, addNewTodoList} = useTodolistsList()
-
-    const addNewTodoListHandler = useCallback((title: string) => {
-       addNewTodoList(title)
-    }, [addNewTodoList])
 
     const mappedTodoList =  todoLists.map(tl => {
         return (
@@ -22,15 +19,16 @@ export const TodolistsList = memo(() => {
             />
         )
     })
+
     return (
         <>
             <div className={s.add_todoList_block}>
-                <InputBlock callback={addNewTodoListHandler}/>
+                <InputBlock callback={addNewTodoList}/>
             </div>
             <div className={s.todoLists_wrapper}>
                 {mappedTodoList}
             </div>
         </>
     );
-});
+}
 

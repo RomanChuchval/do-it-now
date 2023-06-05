@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useCallback} from 'react';
-import s from 'common/components/editable-span/EditableSpan.module.css'
+import React from 'react';
+import s from './EditableSpan.module.css'
 import TextField from '@mui/material/TextField';
-import {useEditableSpan} from "common/hooks/useEditableSpan";
+import {useEditableSpan} from "common/hooks";
 
 type EditableSpanType = {
     title: string
@@ -15,9 +15,6 @@ export const EditableSpan: React.FC<EditableSpanType> = React.memo((
     }
 ) => {
     const {updatedTitle, onEditMode, onChange, editMode, offEditMode} = useEditableSpan(callback, title)
-    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e)
-    }, [onChange])
 
     return (
         <>
@@ -27,14 +24,13 @@ export const EditableSpan: React.FC<EditableSpanType> = React.memo((
                     id="outlined-basic"
                     label={title}
                     variant="outlined"
-                    onChange={onChangeHandler}
+                    onChange={onChange}
                     onBlur={offEditMode}
                     value={updatedTitle}
                     autoFocus
                 />
                 : <span className={s.todolist_title} onDoubleClick={onEditMode}>{title}</span>}
         </>
-
     )
 });
 

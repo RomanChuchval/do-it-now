@@ -1,9 +1,8 @@
-import {useAppSelector} from "app/hooks/use-AppSelector";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
 import {authThunks} from "features/auth/auth-slice";
 import {isLoggedInSelector} from "features/auth/auth-selectors";
 import {useCallback} from "react";
-import {LoginRequestData} from "api/todolist-api";
+import {useAppDispatch, useAppSelector} from "app/hooks";
+import {LoginRequestData} from "api";
 
 export const useAuth = () => {
     const isLoggedIn = useAppSelector<boolean>(isLoggedInSelector)

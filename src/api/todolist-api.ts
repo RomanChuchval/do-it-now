@@ -1,7 +1,5 @@
 import axios, {AxiosResponse} from "axios";
 
-
-
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -51,6 +49,8 @@ export const authAPI = {
         return instance.get<ResponseType<AuthMeDataType>>('auth/me')
     }
 }
+
+//TYPES
 export type CommonRequestData = {
     title: string
     todolistId: string

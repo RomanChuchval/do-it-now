@@ -1,7 +1,7 @@
-import {useAppSelector} from "app/hooks/use-AppSelector";
+import {useAppSelector} from "app/hooks/useAppSelector";
 import {AppRootStateType} from "app/store";
 import {tasksSelector} from "features/tasks/tasks-selector";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {useAppDispatch} from "app/hooks/useAppDispatch";
 import {TaskStatuses} from "api/todolist-api";
 import {FilterValuesType, todolistsActions, todolistsThunks} from "features/todolists/todolists-slice";
 import {useCallback, useEffect} from "react";
@@ -11,7 +11,7 @@ export const useTodolist = (todolistId: string, filter: FilterValuesType) => {
     const tasks = useAppSelector((state: AppRootStateType) => tasksSelector(state, todolistId))
     const dispatch = useAppDispatch()
 
-    useEffect( () => {
+    useEffect(() => {
         dispatch(tasksThunks.fetchTasks({todolistId}))
     }, [])
 
@@ -22,35 +22,35 @@ export const useTodolist = (todolistId: string, filter: FilterValuesType) => {
     }
     const toggleFilterToAll = useCallback(() => {
         dispatch(todolistsActions.changeFilter({todolistId, filter: 'all'}))
-    }, [dispatch, todolistId])
+    }, [todolistId])
 
     const toggleFilterToActive = useCallback(() => {
         dispatch(todolistsActions.changeFilter({todolistId, filter: 'active'}))
-    }, [dispatch, todolistId])
+    }, [todolistId])
 
     const toggleFilterToCompleted = useCallback(() => {
         dispatch(todolistsActions.changeFilter({todolistId, filter: 'completed'}))
-    }, [dispatch, todolistId])
+    }, [todolistId])
 
     const removeTodolist = useCallback(() => {
         dispatch(todolistsThunks.removeTodolist({todolistId}))
-    }, [dispatch, todolistId])
+    }, [todolistId])
 
     const addTaskHandler = useCallback((title: string) => {
         dispatch(tasksThunks.createTask({todolistId, title}))
-    }, [dispatch, todolistId])
+    }, [todolistId])
 
     const changeTodoListTitleHandler = useCallback((title: string) => {
-        dispatch(todolistsThunks.updateTodolistTitle({title, todolistId }))
-    }, [dispatch, todolistId])
+        dispatch(todolistsThunks.updateTodolistTitle({title, todolistId}))
+    }, [todolistId])
 
-    const addTask = useCallback ((title: string) => {
+    const addTask = useCallback((title: string) => {
         dispatch(tasksThunks.createTask({todolistId, title}))
-    }, [dispatch, todolistId] )
+    }, [todolistId])
 
-    const changeTodolistTitle = useCallback ((title: string) => {
-        dispatch(todolistsThunks.updateTodolistTitle({title, todolistId }))
-    }, [dispatch, todolistId] )
+    const changeTodolistTitle = useCallback((title: string) => {
+        dispatch(todolistsThunks.updateTodolistTitle({title, todolistId}))
+    }, [todolistId])
 
     return {
         filteredTasks,

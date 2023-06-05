@@ -1,10 +1,8 @@
-import {authAPI, StatusCodes} from "api/todolist-api";
-import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authFulfilled, authPending, authThunks} from "features/auth/auth-slice";
-import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
+import {loginFulfilled, matchFulfilled, matchPending,} from "common/constants/matchers";
+import {appErrorNetworkHandler, appErrorServerHandler, createAppAsyncThunk} from "common/utils";
+import {authAPI, StatusCodes} from "api";
 import {todolistsFulfilled, todolistsPending} from "features/todolists/todolists-slice";
-import {tasksFulfilled, tasksPending} from "features/tasks/tasks-slice";
 
 const initialState = {
     status: 'idle' as AppStatus,
@@ -27,25 +25,19 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(authThunks.login.fulfilled, (state) => {
+            .addMatcher(loginFulfilled, (state) => {
                 state.initialized = true
             })
             .addMatcher(todolistsPending, (state) => {
                 state.status = 'loading'
             })
-            .addMatcher(tasksPending, (state) => {
-                state.status = 'loading'
-            })
-            .addMatcher(authPending, (state) => {
+            .addMatcher(matchPending, (state) => {
                 state.status = 'loading'
             })
             .addMatcher(todolistsFulfilled, (state) => {
                 state.status = 'success'
             })
-            .addMatcher(tasksFulfilled, (state) => {
-                state.status = 'success'
-            })
-            .addMatcher(authFulfilled, (state) => {
+            .addMatcher(matchFulfilled, (state) => {
                 state.status = 'success'
             })
     }

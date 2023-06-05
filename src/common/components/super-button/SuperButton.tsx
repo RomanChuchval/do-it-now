@@ -26,7 +26,6 @@ export const SuperButton: React.FC<SuperButtonPropsType> = React.memo( (
 
     const activeButtonColor = !value ? 'primary' : value === filter ? 'secondary' : 'primary'
 
-
     return (
         btnType === 'trash'
             ? <IconButton aria-label="delete" onClick={callback}>
@@ -34,7 +33,13 @@ export const SuperButton: React.FC<SuperButtonPropsType> = React.memo( (
             </IconButton>
 
             : btnType === 'delete'
-                ? <Button onClick={callback} size={'small'} variant="outlined" startIcon={<DeleteIcon/>}/>
+                ? <Button sx={{minWidth: '20px'}}
+                          onClick={callback}
+                          size={'small'}
+                          variant="outlined"
+                          >
+                    <DeleteIcon style={{width: '20px'}}/>
+                </Button>
                 : <Button
                     type={'submit'}
                     color={activeButtonColor}

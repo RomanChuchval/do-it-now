@@ -5,12 +5,11 @@ import {
     TaskType,
     todolistAPI, CommonRequestData,
     RemoveTaskRequest, FetchTasksRequest
-} from "api/todolist-api";
-import {appErrorNetworkHandler, appErrorServerHandler} from "common/utils/app-error-handlers";
-import {createSlice, isFulfilled, isPending} from "@reduxjs/toolkit";
-import {createAppAsyncThunk} from "common/utils/createAppAsyncThunk";
-import {todolistsActions, todolistsThunks} from "features/todolists/todolists-slice";
+} from "api";
+import {appErrorNetworkHandler, appErrorServerHandler, createAppAsyncThunk} from "common/utils";
+import {createSlice} from "@reduxjs/toolkit";
 import {authThunks} from "features/auth/auth-slice";
+import {todolistsActions, todolistsThunks} from "features/todolists/todolists-slice";
 
 //Reducer
 const initialState: TodoListDataType = {}
@@ -18,9 +17,7 @@ const initialState: TodoListDataType = {}
 const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
-    reducers: {
-        cleanStateAfterLogout: () => initialState
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(todolistsThunks.removeTodolist.fulfilled, (state, action) => {
@@ -142,20 +139,6 @@ const updateTask = createAppAsyncThunk<{ todolistId: string, taskId: string, upd
         }
     }
 )
-
-export const tasksPending = isPending(
-    fetchTasks,
-    createTask,
-    updateTask,
-    removeTask,
-)
-export const tasksFulfilled = isFulfilled(
-    fetchTasks,
-    createTask,
-    updateTask,
-    removeTask,
-)
-
 export const tasksSlice = slice.reducer
 export const tasksThunks = {createTask, removeTask, fetchTasks, updateTask}
 

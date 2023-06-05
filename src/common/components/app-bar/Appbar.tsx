@@ -1,35 +1,23 @@
-import React, {memo, useCallback} from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import {useAuth} from "features/auth/hooks/useAuth";
-import {SuperButton} from "common/components/super-button/SuperButton";
+import {SuperButton} from "common/components";
 
 
-export const ButtonAppBar = memo(() => {
+export const ButtonAppBar = () => {
     const {isLoggedIn, logout} = useAuth()
     const onLogoutHandler =  () => {
         logout()
     }
-
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar sx={{justifyContent: 'space-between'}}>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+            <AppBar position="static" sx={{backgroundColor: '#423d3d'}}>
+                <Toolbar sx={{justifyContent: 'flex-end'}}>
                     {isLoggedIn && <SuperButton name={'Logout'} callback={onLogoutHandler}/>}
                 </Toolbar>
             </AppBar>
         </Box>
     );
-})
+}

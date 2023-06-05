@@ -1,8 +1,8 @@
 import React from "react";
-import s from "common/components/input-block/InputBlock.module.css";
-import {SuperButton} from "common/components/super-button/SuperButton";
+import s from "./InputBlock.module.css";
 import TextField from '@mui/material/TextField';
 import {useAppForm} from "common/hooks/useAppForm";
+import { SuperButton } from "../super-button/SuperButton";
 
 type InputBlockPropsType = {
     callback: (title: string) => void
@@ -35,7 +35,7 @@ export const InputBlock: React.FC<InputBlockPropsType> = React.memo((
                     />
                 </div>
                 <div>
-                    <SuperButton name={'+'}/>
+                    <SuperButton name={'Create'}/>
                 </div>
             </form>
         </>

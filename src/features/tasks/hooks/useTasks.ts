@@ -1,6 +1,6 @@
 import {ChangeEvent, useCallback} from "react";
 import {tasksThunks} from "features/tasks/tasks-slice";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
+import {useAppDispatch} from "app/hooks/useAppDispatch";
 import {TaskStatuses, TaskType} from "api/todolist-api";
 
 export const useTasks = (task: TaskType, todolistId: string) => {

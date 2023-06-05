@@ -1,10 +1,10 @@
 import {useAuth} from "features/auth/hooks/useAuth";
-import {useAppDispatch} from "app/hooks/use-AppDispatch";
-import {useAppSelector} from "app/hooks/use-AppSelector";
 import {todolistsSelector} from "features/todolists/todolist-selectors";
 import {useCallback, useEffect} from "react";
-import {todolistsThunks} from "features/todolists/todolists-slice";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "app/hooks";
+import {todolistsThunks} from "features/todolists/todolists-slice";
+
 
 export const useTodolistsList = () => {
     const {isLoggedIn} = useAuth()
@@ -19,11 +19,11 @@ export const useTodolistsList = () => {
         } else {
             navigate('/login')
         }
-    }, [dispatch, navigate, isLoggedIn])
+    }, [isLoggedIn])
 
     const addNewTodoList = useCallback((title: string) => {
         dispatch(todolistsThunks.createTodolist({title}))
-    }, [dispatch])
+    }, [])
 
     return {
         todoLists,

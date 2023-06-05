@@ -8,9 +8,9 @@ import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
 import {Controller, SubmitHandler} from "react-hook-form";
 import {Navigate} from "react-router-dom";
-import { useAppForm} from "common/hooks/useAppForm";
+import { useAppForm} from "common/hooks";
 import { useAuth } from './hooks/useAuth';
-import { LoginRequestData } from 'api/todolist-api';
+import { LoginRequestData } from 'api';
 
 
 export const Login = () => {
